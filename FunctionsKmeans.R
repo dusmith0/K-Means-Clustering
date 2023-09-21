@@ -5,7 +5,11 @@
 # numIter - number of maximal iterations for the algorithm, the default value is 100
 MyKmeans <- function(X, K, M = NULL, numIter = 100){
  
-  # Check whether M is NULL or not. If NULL, initialize based on K randomly selected points from X. 
+  # Check whether M is NULL or not. If NULL, initialize based on K randomly selected points from X.
+  if(is.null(M)){
+    M <- sample(X,K,replace=FALSE)
+  }
+  
   # If not NULL, check for compatibility with X dimensions and K.
   
   # Implement K-means algorithm. 
