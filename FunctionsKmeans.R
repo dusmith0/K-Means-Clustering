@@ -3,6 +3,15 @@
 # K - integer specifying number of clusters
 # M - (optional) K by p matrix of cluster centers
 # numIter - number of maximal iterations for the algorithm, the default value is 100
+
+
+
+
+
+
+
+
+
 MyKmeans <- function(X, K, M = NULL, numIter = 100){
  
   # Check whether M is NULL or not. If NULL, initialize based on K randomly selected points from X.
@@ -12,15 +21,15 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
   # If not NULL, check for compatibility with X dimensions and K.
   
   #Coercing values of M into matrix of size K.
-  M <- matrix(M,nrows=K)
+  M <- matrix(M,nrow=K)
   
   #Creating an empty variable to store clustered assignments. 
   Y <- c(rep(0,length(X))) 
  
   #For finding Euclidean Differences
   for (i in X){
-    diff <- rep(0,k)
-    diff[i] <- sqrt(x[i]^2 - M^2)
+    diff <- rep(0,K)
+    diff[i] <- sqrt(X[i]^2 - M^2)
     Y[i] <- which(min(diff))
   }
   
