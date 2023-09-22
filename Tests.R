@@ -10,3 +10,6 @@ K <- 2
 kmeans(X,2)$centers
 X
 
+
+#Super simple sample data
+MyKmeans()

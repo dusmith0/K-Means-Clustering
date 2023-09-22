@@ -13,12 +13,15 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
   
   #Coercing values of M into matrix of size K.
   M <- matrix(M,nrows=K)
- 
   
+  #Creating an empty variable to store clustered assignments. 
+  Y <- c(rep(0,length(X))) 
+ 
+  #For finding Euclidean Differences
   for (i in X){
     diff <- rep(0,k)
-    diff <- sqrt(x[i]^2 - K^2)
-    
+    diff[i] <- sqrt(x[i]^2 - M^2)
+    Y[i] <- which(min(diff))
   }
   
   # Implement K-means algorithm. 
