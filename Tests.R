@@ -7,7 +7,7 @@ source("FunctionsKmeans.R")
 X<-sample(seq(1:100),10)
 K <- 2
 M <- c(10,90)
-kmeans(X,2)$centers
+kmeans(X,2)
 X
 
 
