@@ -4,7 +4,20 @@
 # M - (optional) K by p matrix of cluster centers
 # numIter - number of maximal iterations for the algorithm, the default value is 100
 
+X<-sample(seq(1:100),10)
+K <- 2
+M <- c(10,90)
 
+M <- matrix(M,nrow=K)
+
+Y <- c(rep(0,length(X))) 
+
+for (i in X){
+  diff <- rep(0,K)
+  diff <- (sqrt(X[i]^2 - M^2))
+  return(diff)
+  Y[i] <- which(diff == min(diff))
+}
 
 
 
