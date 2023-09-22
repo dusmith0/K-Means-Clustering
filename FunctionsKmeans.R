@@ -7,10 +7,19 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
  
   # Check whether M is NULL or not. If NULL, initialize based on K randomly selected points from X.
   if(is.null(M)){
-    M <- sample(X,K,replace=FALSE)
+    M <- (sample(X,K,replace=FALSE))
   }
-  
   # If not NULL, check for compatibility with X dimensions and K.
+  
+  #Coercing values of M into matrix of size K.
+  M <- matrix(M,nrows=K)
+ 
+  
+  for (i in X){
+    diff <- rep(0,k)
+    diff <- sqrt(x[i]^2 - K^2)
+    
+  }
   
   # Implement K-means algorithm. 
   # It should stop when either 
