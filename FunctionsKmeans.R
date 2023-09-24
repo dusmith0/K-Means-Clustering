@@ -29,7 +29,7 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
   clusters <- apply(diff,2,function(z) which(z == min(z)))
   
   #This Piece is for re-evaluating the k-means
-  M <- c(mean(diff[for(i in K){
+  M <- c(mean(diff[for(i in 1:K){
     logic <- which(clusters == i) 
     return(logic)
     }

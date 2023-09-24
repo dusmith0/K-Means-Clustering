@@ -9,14 +9,14 @@ diff_clusters <- function(Data,M){
 }
 
 ##This is my first attempt at building a For loop for what the above did.
-Y <- c(rep(0,length(X)))
+#Y <- c(rep(0,length(X)))
 
-for (i in length(X)){ 
+for (i in 1:length(X)){ 
   diff <- rep(0,K)
   diff <- (sqrt((X[i] - c(M))^2))
   #return(diff)
-  assign("Y[i]",which(diff == min(diff)),envir = .GlobalEnv)
-  #return(Y)
+  Y[i] <- which(diff == min(diff))
+  #assign("Y[i]",which(diff == min(diff)),envir = .GlobalEnv)
 }
 
 Y
