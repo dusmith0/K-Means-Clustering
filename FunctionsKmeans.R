@@ -16,9 +16,9 @@ Y <- c(rep(0,length(X)))
 for (i in length(X)){ #The loop is not exicuting to the global enviornment. Try mapply instead.
   diff <- rep(0,K)
   diff <- (sqrt((X[i] - c(M))^2))
-  return(diff)
-  Y[i] <- (which(diff == min(diff)))
-  return(Y)
+  #return(diff)
+  assign("Y[i]",which(diff == min(diff)),envir = .GlobalEnv)
+  #return(Y)
 }
 
 Y
