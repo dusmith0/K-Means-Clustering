@@ -29,13 +29,19 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
   clusters <- apply(diff,2,function(z) which(z == min(z)))
   
   #This Piece is for re-evaluating the k-means
-  M <- c(mean(diff[for(i in length(K)){
+  M <- c(mean(diff[for(i in K){
     logic <- which(clusters == i) 
     return(logic)
     }
   ]))
   
+  Ks <- seq(1:K)
+  M <- c(mean(diff[which(clusters == Ks)]))
   
+  for(i in K){
+    M[i] <- mean(X[which(clusters == i)])
+    return(M)
+  }
   # Implement K-means algorithm. 
   # It should stop when either 
   # (i) the centroids don't change from one iteration to the next (exactly the same), or
