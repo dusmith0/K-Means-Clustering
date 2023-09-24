@@ -20,6 +20,14 @@ for (i in 1:length(X)){
 }
 
 Y
+ 
+#These are other attempts to find the new k-means. I will keep it for now in the 
+#case where these may actually be faster then the code I kept. 
+M <- c(mean(diff[for(i in 1:K){
+  logic <- which(clusters == i) 
+  return(logic)
+}
+]))
 
-##Note that while it does work, it will not retain the results in Y. The Y in the 
-##Global environment will be kept. 
+Ks <- seq(1:K)
+M <- c(mean(diff[which(clusters == Ks)]))
