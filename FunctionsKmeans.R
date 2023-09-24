@@ -38,9 +38,9 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
   Ks <- seq(1:K)
   M <- c(mean(diff[which(clusters == Ks)]))
   
-  for(i in K){
+  for(i in 1:K){
     M[i] <- mean(X[which(clusters == i)])
-    return(M)
+    
   }
   # Implement K-means algorithm. 
   # It should stop when either 
