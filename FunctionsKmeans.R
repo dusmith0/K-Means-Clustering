@@ -4,13 +4,24 @@
 # M - (optional) K by p matrix of cluster centers
 # numIter - number of maximal iterations for the algorithm, the default value is 100
 
+set.seed(12)
 X<-sample(seq(1:100),10)
 K <- 2
 M <- c(10,90)
+X<- rep(X,K)
 
 M <- matrix(M,nrow=K)
 
 Y <- c(rep(0,length(X)))
+
+#Attempting apply instead of a for loop
+diffs<- mapply(function(X){sqrt((X - c(M))^2)})
+
+#Just as a vectorization
+diffs <- matrix((sqrt((X[] - c(M))^2)),byrow = FALSE, ncol = 2) #This one seeded to work.
+
+#This part works for creating the clusters...
+Y <- apply(diffs,1,function(z) which(z == min(z)))
 
 
 for (i in length(X)){ #The loop is not exicuting to the global enviornment. Try mapply instead.
