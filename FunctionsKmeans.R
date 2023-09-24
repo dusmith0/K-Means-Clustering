@@ -10,18 +10,23 @@ K <- 2
 M <- c(10,90)
 X<- rep(X,K)
 
-M <- matrix(M,nrow=K)
+M <- matrix(rep(M,length(X)),nrow=K,byrow=TRUE)
 
 Y <- c(rep(0,length(X)))
 
+#Building a function to place into an apply statement
+diff_calculation <- function(data){
+  diff <- apply(as.matrix(X),c(1:2),function(X) {sqrt((X - M)^2)})
+  
+}
+
 #Attempting apply instead of a for loop
+
 diffs<- mapply(function(X){sqrt((X - c(M))^2)})
 
-#Just as a vectorization
-diffs <- matrix((sqrt((X[] - c(M))^2)),byrow = FALSE, ncol = 2) #This one seeded to work.
-
-#This part works for creating the clusters...
-Y <- apply(diffs,1,function(z) which(z == min(z)))
+#This sort of works, but does not add in the correct order.
+diffs <- matrix((sqrt((X[] - c(M))^2)),byrow = FALSE, ncol = 2)
+clusters <- apply(diffs,1,function(z) which(z == min(z)))
 
 
 for (i in length(X)){ #The loop is not exicuting to the global enviornment. Try mapply instead.
@@ -49,12 +54,9 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
   #Creating an empty variable to store clustered assignments. 
   Y <- c(rep(0,length(X))) 
  
-  #For finding Euclidean Differences
-  for (i in X){
-    diff <- rep(0,K)
-    diff[i] <- sqrt(X[i]^2 - M^2)
-    Y[i] <- which(min(diff))
-  }
+  #For finding Euclidean Differences, and selecting the clusters
+  diffs <- matrix((sqrt((X[] - c(M))^2)),byrow = FALSE, ncol = 2)
+  clusters <- apply(diffs,1,function(z) which(z == min(z)))
   
   # Implement K-means algorithm. 
   # It should stop when either 
