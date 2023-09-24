@@ -19,13 +19,13 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
   # If not NULL, check for compatibility with X dimensions and K.
   
   #Coercing values of M into matrix of size K.
-  M <- matrix(M,nrow=K)
+  #M <- matrix(M,nrow=K)
   
   #Creating an empty variable to store clustered assignments. 
   Y <- c(rep(0,length(X))) 
  
   #For finding Euclidean Differences, and selecting the clusters
-  diff <- apply(as.matrix(X),1,function(X) (X - M))
+  diff <- apply(as.matrix(X),c(1:2),function(X) {sqrt((X - M)^2)})
   clusters <- apply(diff,2,function(z) which(z == min(z)))
   
   # Implement K-means algorithm. 
@@ -35,5 +35,5 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
   # (iii) one of the clusters has disappeared after one of the iterations (in which case the error message is returned)
   
   # Return the vector of assignments Y
-  return(Y)
+  return(clusters)
 }

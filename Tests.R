@@ -8,7 +8,7 @@ set.seed(12)
 X<-sample(seq(1:100),10)
 K <- 3
 M <- c(10,90,30)
-X<- rep(X,K)
+
 
 #The below code was my attempt to change the format of M to see what would happen.
 #M <- matrix(rep(M,length(X)),nrow=K,byrow=TRUE)
