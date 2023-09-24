@@ -19,14 +19,22 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
   # If not NULL, check for compatibility with X dimensions and K.
   
   #Coercing values of M into matrix of size K.
-  #M <- matrix(M,nrow=K)
-  
+
   #Creating an empty variable to store clustered assignments. 
   Y <- c(rep(0,length(X))) 
- 
+
+## Maybe it would be wise to add a While loop here to check when to end. 
   #For finding Euclidean Differences, and selecting the clusters
   diff <- apply(as.matrix(X),c(1:2),function(X) {sqrt((X - M)^2)})
   clusters <- apply(diff,2,function(z) which(z == min(z)))
+  
+  #This Piece is for re-evaluating the k-means
+  M <- c(mean(diff[for(i in length(K)){
+    logic <- which(clusters == i) 
+    return(logic)
+    }
+  ]))
+  
   
   # Implement K-means algorithm. 
   # It should stop when either 
