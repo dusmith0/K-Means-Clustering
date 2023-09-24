@@ -4,12 +4,16 @@
 source("FunctionsKmeans.R")
 
 #Looking at what the kmeans algorithm produces.
+set.seed(12)
 X<-sample(seq(1:100),10)
-K <- 2
-M <- c(10,90)
-kmeans(X,2)
-X
+K <- 3
+M <- c(10,90,30)
+X<- rep(X,K)
 
+#The below code was my attempt to change the format of M to see what would happen.
+#M <- matrix(rep(M,length(X)),nrow=K,byrow=TRUE)
+
+Y <- c(rep(0,length(X)))
 
 #Super simple sample data
 MyKmeans(X,K,M)
