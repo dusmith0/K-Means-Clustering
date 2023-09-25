@@ -50,7 +50,7 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
     }
     
     for(j in 1:K){
-      if(c(i) == c(i)){
+      if(M[i] == Mnew[i]){
       break
       }
     }
