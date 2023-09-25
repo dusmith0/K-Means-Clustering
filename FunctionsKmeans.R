@@ -56,15 +56,16 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
     }
   
   
-  
+  return(clusters)
+  return(Mnew)
+  return(M)
   # It should stop when either 
   # (i) the centroids don't change from one iteration to the next (exactly the same), or
   # (ii) the maximal number of iterations was reached, or
   # (iii) one of the clusters has disappeared after one of the iterations (in which case the error message is returned)
   
   # Return the vector of assignments Y
-}
-  return(clusters)
-  return(Mnew)
-  return(M)
+  }
+  Y <- clusters
+  return(Y)
 }

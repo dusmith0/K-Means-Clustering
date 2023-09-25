@@ -8,6 +8,7 @@ Y <- c(rep(0,length(X)))
 
 #Super simple sample data
 MyKmeans(X,K,M)
+MyKmeans(X,K)
 
 kmeans(X,K,M)
 kmeans(X,K)
