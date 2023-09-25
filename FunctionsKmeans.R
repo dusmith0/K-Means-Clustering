@@ -25,25 +25,35 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
     the value you chose for K=Number of clusters."))
   }
 
-  #Creating an empty variable to store clustered assignments. 
+  # Creating an empty variable to store clustered assignments, New K-means, and 
+  # a counter for numIter.
   Y <- c(rep(0,length(X))) 
+  Mnew <- c(rep(0,K))
+  counter <- 1
 
-## Maybe it would be wise to add a While loop here to check when to end. 
-  #For finding Euclidean Differences, and selecting the clusters
-  diff <- apply(as.matrix(X),c(1:2),function(X) {sqrt((X - M)^2)})
-  clusters <- apply(diff,2,function(z) which(z == min(z)))
+  # Implement K-means algorithm.
+  while(Mnew !== M & counter !== numIter){
+ 
+    # Creating a Counter and merging the Mnew with M
+    counter <- counter + 1
+    # For finding Euclidean Differences, and selecting the clusters
+    diff <- apply(as.matrix(X),c(1:2),function(X) {sqrt((X - M)^2)})
+    clusters <- apply(diff,2,function(z) which(z == min(z)))
   
-  #This Piece is for re-evaluating the k-means
-  for(i in 1:K){
-    M[i] <- mean(X[which(clusters == i)])
+    # This Piece is for re-evaluating the k-means
+    for(i in 1:K){
+      Mnew[i] <- mean(X[which(clusters == i)])
     
-  }
-  # Implement K-means algorithm. 
+    }
+  
+  
+  
   # It should stop when either 
   # (i) the centroids don't change from one iteration to the next (exactly the same), or
   # (ii) the maximal number of iterations was reached, or
   # (iii) one of the clusters has disappeared after one of the iterations (in which case the error message is returned)
   
   # Return the vector of assignments Y
+}
   return(clusters)
 }
