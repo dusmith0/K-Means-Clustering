@@ -19,7 +19,7 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
   }
   # If not NULL, check for compatibility with X dimensions and K.
   
-  #Coercing values of M into matrix of size K.
+  #Checking lenght of M to match that of K.
   if(K != length(M)){
     stop(paste("Error: The number of values you have for M=Starting Means, must match 
     the value you chose for K=Number of clusters."))
