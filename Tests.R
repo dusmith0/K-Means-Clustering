@@ -3,6 +3,9 @@
 # Source the functions
 source("FunctionsKmeans.R")
 
+#inserting libraries
+library("microbenchmark")
+
 #Calling the Function
 Y <- c(rep(0,length(X)))
 
@@ -30,3 +33,41 @@ set.seed(12)
 X<-sample(seq(1:100),10)
 K <- 3
 M <- c(10,90)
+
+#Checking my speed for now
+numIter <- 10000
+M <- NULL
+
+Y <- c(rep(0,length(X))) 
+Mnew <- c(rep(NULL,K))
+counter <- 0
+
+microbenchmark(
+  while(counter != numIter){
+    counter <- counter + 1
+    
+    if(is.null(Mnew) == FALSE){
+      M <- Mnew
+    }
+    
+    diff <- apply(as.matrix(X),c(1:2),function(X) {sqrt((X - M)^2)})
+    clusters <- apply(diff,2,function(z) which(z == min(z)))
+
+    for(i in 1:K){
+      Mnew[i] <- mean(X[which(clusters == i)])
+      
+    }
+    
+    for(j in 1:K){
+      if(M[i] == Mnew[i]){
+        break
+      }
+    }
+    
+
+  }
+)
+
+microbenchmark(
+  kmeans(X,K,iter.max = numIter)
+  )

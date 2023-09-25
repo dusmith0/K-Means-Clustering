@@ -57,9 +57,7 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
     }
   
   
-  return(clusters)
-  return(Mnew)
-  return(M)
+
   # It should stop when either 
   # (i) the centroids don't change from one iteration to the next (exactly the same), or
   # (ii) the maximal number of iterations was reached, or
@@ -69,4 +67,7 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
   }
   Y <- clusters
   return(Y)
+  return(clusters)
+  return(Mnew)
+  return(M)
 }
