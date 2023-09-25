@@ -29,16 +29,17 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
   # a counter for numIter.
   Y <- c(rep(0,length(X))) 
   Mnew <- c(rep(NULL,K))
-  counter <- 1
+  counter <- 0
 
   # Implement K-means algorithm.
   while(counter != numIter){
-  
+    # Creating a Counter and merging the Mnew with M
+    counter <- counter + 1
+    
     if(is.null(Mnew) == FALSE){
       M <- Mnew
     }
-    # Creating a Counter and merging the Mnew with M
-    counter <- counter + 1
+    
     # For finding Euclidean Differences, and selecting the clusters
     diff <- apply(as.matrix(X),c(1:2),function(X) {sqrt((X - M)^2)})
     clusters <- apply(diff,2,function(z) which(z == min(z)))
