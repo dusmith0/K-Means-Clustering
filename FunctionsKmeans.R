@@ -12,13 +12,18 @@
 
 MyKmeans <- function(X, K, M = NULL, numIter = 100){
  
-  # Check whether M is NULL or not. If NULL, initialize based on K randomly selected points from X.
+  # Check whether M is NULL or not. If NULL, initialize based on K randomly 
+  # selected points from X.
   if(is.null(M)){
     M <- (sample(X,K,replace=FALSE))
   }
   # If not NULL, check for compatibility with X dimensions and K.
   
   #Coercing values of M into matrix of size K.
+  if(K != length(M)){
+    stop(paste("Error: The number of values you have for M=Starting Means, must match 
+    the value you chose for K=Number of clusters."))
+  }
 
   #Creating an empty variable to store clustered assignments. 
   Y <- c(rep(0,length(X))) 
