@@ -24,7 +24,6 @@ M <- c(29,92,71)
 #M <- matrix(rep(M,length(X)),nrow=K,byrow=TRUE)
 
 
-
 #Testing to see if my first Error message works:
 set.seed(12)
 X<-sample(seq(1:100),10)

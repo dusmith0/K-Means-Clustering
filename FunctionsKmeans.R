@@ -28,12 +28,15 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
   # Creating an empty variable to store clustered assignments, New K-means, and 
   # a counter for numIter.
   Y <- c(rep(0,length(X))) 
-  Mnew <- c(rep(0,K))
+  Mnew <- c(rep(NULL,K))
   counter <- 1
 
   # Implement K-means algorithm.
-  while(Mnew !== M & counter !== numIter){
- 
+  while(counter != numIter){
+  
+    if(is.null(Mnew) == FALSE){
+      M <- Mnew
+    }
     # Creating a Counter and merging the Mnew with M
     counter <- counter + 1
     # For finding Euclidean Differences, and selecting the clusters
@@ -44,6 +47,12 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
     for(i in 1:K){
       Mnew[i] <- mean(X[which(clusters == i)])
     
+    }
+    
+    for(j in 1:K){
+      if(c(i) == c(i)){
+      break
+      }
     }
   
   
@@ -56,4 +65,6 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
   # Return the vector of assignments Y
 }
   return(clusters)
+  return(Mnew)
+  return(M)
 }
