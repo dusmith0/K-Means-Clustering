@@ -31,3 +31,11 @@ M <- c(mean(diff[for(i in 1:K){
 
 Ks <- seq(1:K)
 M <- c(mean(diff[which(clusters == Ks)]))
+
+#Old function for checking if M matches Mnew
+
+for(j in 1:K){ #8 Milliseconds seems to be my longest running peice.
+  if(M[i] == Mnew[i]){
+    break
+  }
+}

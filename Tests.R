@@ -20,8 +20,9 @@ kmeans(X,K)
 set.seed(12)
 X<-sample(seq(1:100),10)
 K <- 3
-M <- c(10,90,30)
+M <- c(10,50,30)
 M <- c(29,92,71)
+M <- NULL
 
 
 #The below code was my attempt to change the format of M to see what would happen.
@@ -73,6 +74,9 @@ microbenchmark(
   kmeans(X,K,iter.max = numIter)
   )
 
+microbenchmark(
+  MyKmeans(X,K)
+)
 ##Using Rprof() to check for bottle necks
 Rprof()
 invisible(MyKmeans(X,K,M = c(10,80,30),numIter=1000))

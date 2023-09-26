@@ -44,7 +44,9 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
     # For finding Euclidean Differences, and selecting the clusters
  
   diff <- apply(as.matrix(X),c(1:2),function(X) {sqrt((X - M)^2)}) #104 microseconds
-  clusters <- apply(diff,2,function(z) which.min(diff)) #65 Microseconds
+  clusters <- apply(diff,2,function(z) which(z == min(z))) #203 Microseconds
+
+  #clusters <- apply(diff,2,function(z) which.min(diff)) #65 Microseconds
 
     # This Piece is for re-evaluating the k-means
 
@@ -54,13 +56,9 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
     }
 
 
-    for(j in 1:K){ #8 Milliseconds seems to be my longest running peice.
-      if(M[i] == Mnew[i]){
+    if(identical(M,Mnew)){
       break
-      }
     }
- 
-  
 
   # It should stop when either 
   # (i) the centroids don't change from one iteration to the next (exactly the same), or
