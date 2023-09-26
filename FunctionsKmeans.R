@@ -44,7 +44,7 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
     # For finding Euclidean Differences, and selecting the clusters
  
   diff <- apply(as.matrix(X),c(1:2),function(X) {sqrt((X - M)^2)}) #104 microseconds
-  clusters <- apply(diff,2,function(z) which(z == min(z))) #203 Microseconds
+  clusters <- apply(diff,2,function(z) which.min(diff)) #65 Microseconds
 
     # This Piece is for re-evaluating the k-means
 
