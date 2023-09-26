@@ -22,6 +22,7 @@ X<-sample(seq(1:100),10)
 K <- 3
 M <- c(10,50,30)
 M <- c(29,92,71)
+M <- c(sample(10,10,replace = TRUE))
 M <- NULL
 
 

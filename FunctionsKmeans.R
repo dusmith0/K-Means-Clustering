@@ -44,30 +44,30 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
     
     # For finding Euclidean Differences, and selecting the clusters
  
-  diff <- apply(as.matrix(X),c(1:2),function(X) {sqrt((X - M) ^ 2)}) #104 microseconds
-  clusters <- apply(diff,2,function(z) which(z == min(z))) #203 Microseconds
+    diff <- apply(as.matrix(X),c(1:2),function(X) {sqrt((X - M) ^ 2)}) #104 microseconds
+    diff <- apply(as.matrix(X),c(1,2),function (X - M) norm((X - M),type="2"))
+    clusters <- apply(diff,2,function(z) which(z == min(z))) #203 Microseconds
 
-  # clusters <- apply(diff,2,function(z) which.min(diff)) #65 Microseconds
-
+    # clusters <- apply(diff,2,function(z) which.min(diff)) #65 Microseconds
     # This Piece is for re-evaluating the k-means
 
     for(i in 1:K){
       Mnew[i] <- mean(X[which(clusters == i)])
-    
     }
 
-  # Break option 1 the centroids don't change from one iteration to the next (exactly the same),
-    if(identical(M,Mnew)){
-      break
-    }
+    # Break option 1 the centroids don't change from one iteration to the next (exactly the same),
+      if(identical(M,Mnew)){
+        break
+      }
 
-  # Break option (iii) one of the clusters has disappeared after one of the iterations (in which case the error message is returned)
-     if(any(is.nan(Mnew))){
-       stop(paste("Error: The function completely removed one cluster with the chosen
+    # Break option (iii) one of the clusters has disappeared after one of the iterations (in which case the error message is returned)
+       if(any(is.nan(Mnew))){
+         stop(paste("Error: The function completely removed one cluster with the chosen
                   values of M. Please generate or choose a different set of initial clusters
                   and attempt the function again."))
-     }
-  # Return the vector of assignments Y
+      }
+  
+    # Return the vector of assignments Y
   }
   Y <- clusters
   return(Y)
