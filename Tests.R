@@ -11,7 +11,7 @@ Y <- c(rep(0,length(X)))
 
 #Super simple sample data
 MyKmeans(X,K,M)
-MyKmeans(X,K)
+MyKmeans(X,K,numIter=1000)
 
 kmeans(X,K,M)
 kmeans(X,K)
@@ -42,6 +42,7 @@ Y <- c(rep(0,length(X)))
 Mnew <- c(rep(NULL,K))
 counter <- 0
 
+#Using Microbenchmark to check speed
 microbenchmark(
   while(counter != numIter){
     counter <- counter + 1
@@ -71,3 +72,9 @@ microbenchmark(
 microbenchmark(
   kmeans(X,K,iter.max = numIter)
   )
+
+##Using Rprof() to check for bottle necks
+Rprof()
+invisible(MyKmeans(X,K,M = c(10,80,30),numIter=1000))
+Rprof(NULL)
+summaryRprof()

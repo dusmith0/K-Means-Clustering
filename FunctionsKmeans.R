@@ -35,31 +35,31 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
   while(counter != numIter){
     # Creating a Counter and merging the Mnew with M
     counter <- counter + 1
-microbenchmark(
+
     if(is.null(Mnew) == FALSE){ #1125 nano-seconds
       M <- Mnew
     }
-  )
+  
     
     # For finding Euclidean Differences, and selecting the clusters
-microbenchmark( 
+ 
   diff <- apply(as.matrix(X),c(1:2),function(X) {sqrt((X - M)^2)}) #104 microseconds
-)
-microbenchmark(
   clusters <- apply(diff,2,function(z) which(z == min(z))) #203 Microseconds
-)
+
     # This Piece is for re-evaluating the k-means
+
     for(i in 1:K){
       Mnew[i] <- mean(X[which(clusters == i)])
     
     }
- microbenchmark(  
+
+
     for(j in 1:K){ #8 Milliseconds seems to be my longest running peice.
       if(M[i] == Mnew[i]){
       break
       }
     }
- )
+ 
   
 
   # It should stop when either 
@@ -71,7 +71,4 @@ microbenchmark(
   }
   Y <- clusters
   return(Y)
-  return(clusters)
-  return(Mnew)
-  return(M)
-}
+ }
