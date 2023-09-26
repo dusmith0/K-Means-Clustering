@@ -75,7 +75,7 @@ microbenchmark(
   )
 
 microbenchmark(
-  MyKmeans(X,K)
+  MyKmeans(X,K,M = c(10,80,30),numIter=10000)
 )
 ##Using Rprof() to check for bottle necks
 Rprof()
