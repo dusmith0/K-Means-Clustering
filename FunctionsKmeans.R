@@ -32,6 +32,7 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
   counter <- 0
 
   # Implement K-means algorithm.
+  # Break option (ii) the maximal number of iterations was reached
   while(counter != numIter){
     # Creating a Counter and merging the Mnew with M
     counter <- counter + 1
@@ -55,16 +56,17 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
     
     }
 
-
+  # Break option 1 the centroids don't change from one iteration to the next (exactly the same),
     if(identical(M,Mnew)){
       break
     }
 
-  # It should stop when either 
-  # (i) the centroids don't change from one iteration to the next (exactly the same), or
-  # (ii) the maximal number of iterations was reached, or
-  # (iii) one of the clusters has disappeared after one of the iterations (in which case the error message is returned)
-  
+  # Break option (iii) one of the clusters has disappeared after one of the iterations (in which case the error message is returned)
+     if(any(is.nan(Mnew))){
+       stop(paste("Error: The function completely removed one cluster with the chosen
+                  values of M. Please generate or choose a different set of initial clusters
+                  and attempt the function again."))
+     }
   # Return the vector of assignments Y
   }
   Y <- clusters

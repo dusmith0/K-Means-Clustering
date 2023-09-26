@@ -75,10 +75,14 @@ microbenchmark(
   )
 
 microbenchmark(
-  MyKmeans(X,K,M = c(10,80,30),numIter=10000)
+  MyKmeans(X,K,M = c(10,90,30),numIter=10000)
 )
 ##Using Rprof() to check for bottle necks
 Rprof()
 invisible(MyKmeans(X,K,M = c(10,80,30),numIter=1000))
 Rprof(NULL)
 summaryRprof()
+
+#I am attempting to break my function by removing a cluster to see if
+# My error message will work. 
+MyKmeans(X,K,M = c(10,5,2),numIter=10000)
