@@ -15,13 +15,15 @@ Y <- zipcode[ , 1]
 # Extract the data points
 X <- zipcode[ , -1]
 
-# [ToDo] Try K-means algorithm nRep times with different starting points on ZIPCODE data. Calculate Rand Index at each replication
+# [ToDo] Try K-means algorithm nRep times with different starting points
+# on ZIPCODE data. Calculate Rand Index at each replication
 nRep <- 50
-
+MyKmeans(X,10,numIter = nRep)
+cluster <- kmeans(X,10,iter.max=nRep)$cluster
 
 
 
 # [ToDo] Report mean Rand Index
-
+rand.index(Y,cluster)
 
 # [ToDo] Report mean run time for one replication on your machine
