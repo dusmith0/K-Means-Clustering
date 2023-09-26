@@ -6,7 +6,7 @@
 
 
 
-#Building a function to place into an apply statement
+# Building a function to place into an apply statement
 
 
 
@@ -19,7 +19,7 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
   }
   # If not NULL, check for compatibility with X dimensions and K.
   
-  #Checking lenght of M to match that of K.
+  # Checking lenght of M to match that of K.
   if(K != length(M)){
     stop(paste("Error: The number of values you have for M=Starting Means, must match 
     the value you chose for K=Number of clusters."))
@@ -44,10 +44,10 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
     
     # For finding Euclidean Differences, and selecting the clusters
  
-  diff <- apply(as.matrix(X),c(1:2),function(X) {sqrt((X - M)^2)}) #104 microseconds
+  diff <- apply(as.matrix(X),c(1:2),function(X) {sqrt((X - M) ^ 2)}) #104 microseconds
   clusters <- apply(diff,2,function(z) which(z == min(z))) #203 Microseconds
 
-  #clusters <- apply(diff,2,function(z) which.min(diff)) #65 Microseconds
+  # clusters <- apply(diff,2,function(z) which.min(diff)) #65 Microseconds
 
     # This Piece is for re-evaluating the k-means
 
