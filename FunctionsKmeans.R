@@ -8,21 +8,36 @@
 
 # Building a function to place into an apply statement
 
+if(is.null(M)){
+  ifelse(!is.matrix(X), 
+         (M <- sample(X,K,replace=FALSE)) , 
+  ifelse(!is.matrix(X),
+         {rows_data <- sample(nrow(X),K,replace=FALSE);
+          M <- X[rows_data,]},
+    break
+    )
+  )
+} #This is about 300 nanoseconds shorter then what is below. Not sure if that is 
+# really worth the effort. 
 
 
 MyKmeans <- function(X, K, M = NULL, numIter = 100){
  
   # Check whether M is NULL or not. If NULL, initialize based on K randomly 
   # selected points from X.
+
+microbenchmark(
   if(is.null(M) & !is.matrix(X)){
     M <- (sample(X,K,replace=FALSE))
   }
-  
-  #selection of points from X if X is a matrix ##This tests at 1.2 microseconds
+)
+  #selection of points from X if X is a matrix This tests at 1.2 microseconds
+microbenchmark(
   if(is.null(M) & is.matrix(X)){
     rows_data <- sample(nrow(X),K,replace=FALSE)
     M <- X[rows_data,]
   }
+)
   # If not NULL, check for compatibility with X dimensions and K.
   
   # Checking length of M to match that of K.
@@ -32,17 +47,19 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
   }
 
   # Checking length of rows in M to match that of K
-  if(K != nrow(M) & is.matrix(M)){
-    stop(paste("Error: The number of values you have for M=Starting Means, must match 
-    the value you chose for K=Number of clusters."))
-  }
+  if(is.matrix(M)){
+    if(K != (nrow(M))){
+      stop(paste("Error: The number of values you have for M=Starting Means, must match 
+      the value you chose for K=Number of clusters."))
+    }
   
-  # Checking to ensure that if X is in matrix for multiple varibales, M is in an 
-  # comparable form.
+    # Checking to ensure that if X is in matrix for multiple varibales, M is in an 
+    # comparable form.
   
-  if(ncol(X) != ncol(M) & is.matrix(X)){
-    stop(paste("Error: this fuction requires that the number of columns (variables)
+    if(ncol(X) != ncol(M)){
+      stop(paste("Error: this fuction requires that the number of columns (variables)
                in M (guessed centers) match that of X (your data)"))
+    }
   }
   # Creating an empty variable to store clustered assignments, New K-means, and 
   # a counter for numIter.
@@ -60,10 +77,8 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
       M <- Mnew
     }
   
-    
     # For finding Euclidean Differences, and selecting the clusters
- 
-    diff <- apply(as.matrix(X),c(1:2),function(X) {sqrt((X - M) ^ 2)}) #104 microseconds
+     diff <- apply(as.matrix(X),c(1:2),function(X) {sqrt((X - M) ^ 2)}) #104 microseconds
 #   diff <- apply(as.matrix(X),c(1,2),function (X - M) norm((X - M),type="2"))
     clusters <- apply(diff,2,function(z) which(z == min(z))) #203 Microseconds
 
