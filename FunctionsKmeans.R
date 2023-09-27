@@ -18,7 +18,7 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
     M <- (sample(X,K,replace=FALSE))
   }
   
-  #selection of points from X if X is a matrix
+  #selection of points from X if X is a matrix ##This tests at 1.2 microseconds
   if(is.null(M) & is.matrix(X)){
     rows_data <- sample(nrow(X),K,replace=FALSE)
     M <- X[rows_data,]
@@ -26,11 +26,24 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
   # If not NULL, check for compatibility with X dimensions and K.
   
   # Checking length of M to match that of K.
-  if(K != length(M)){
+  if(K != length(M) & !is.matrix(M)){
     stop(paste("Error: The number of values you have for M=Starting Means, must match 
     the value you chose for K=Number of clusters."))
   }
 
+  # Checking length of rows in M to match that of K
+  if(K != nrow(M) & is.matrix(M)){
+    stop(paste("Error: The number of values you have for M=Starting Means, must match 
+    the value you chose for K=Number of clusters."))
+  }
+  
+  # Checking to ensure that if X is in matrix for multiple varibales, M is in an 
+  # comparable form.
+  
+  if(ncol(X) != ncol(M) & is.matrix(X)){
+    stop(paste("Error: this fuction requires that the number of columns (variables)
+               in M (guessed centers) match that of X (your data)"))
+  }
   # Creating an empty variable to store clustered assignments, New K-means, and 
   # a counter for numIter.
   Y <- c(rep(0,length(X))) 

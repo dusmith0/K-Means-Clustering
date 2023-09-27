@@ -100,4 +100,4 @@ K <- 5
 
 data <- matrix(c(x,y,z),byrow=FALSE,nrow=10)
 
-
+MyKmeans(data,K)
