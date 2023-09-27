@@ -88,3 +88,16 @@ summaryRprof()
 # My error message will work. 
 MyKmeans(X,K,M = c(10,5,2),numIter=10000)
 
+
+# Creating a new test with a set of 3D coordinates
+set.seed(12)
+x <- sample(1:100,10)
+set.seed(20)
+y <- sample(1:100,10)
+set.seed(300)
+z <- sample(1:100,10)
+K <- 5
+
+data <- matrix(c(x,y,z),byrow=FALSE,nrow=10)
+
+
