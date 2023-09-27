@@ -3,39 +3,40 @@
 # Source the functions
 source("FunctionsKmeans.R")
 
-#inserting libraries
+# inserting libraries
 library("microbenchmark")
 
-#Calling the Function
+# Calling the Function
 Y <- c(rep(0,length(X)))
 
-#Super simple sample data
+# Super simple sample data
 MyKmeans(X,K,M)
 MyKmeans(X,K,numIter=1000)
 
 kmeans(X,K,M)
 kmeans(X,K)
 
-#Looking at what the kmeans algorithm produces.
+# Looking at what the kmeans algorithm produces.
 set.seed(12)
 X<-sample(seq(1:100),10)
 K <- 3
 M <- c(10,50,30)
 M <- c(29,92,71)
+M <- c(sample(10,10,replace = TRUE))
 M <- NULL
 
 
-#The below code was my attempt to change the format of M to see what would happen.
-#M <- matrix(rep(M,length(X)),nrow=K,byrow=TRUE)
+# The below code was my attempt to change the format of M to see what would happen.
+# M <- matrix(rep(M,length(X)),nrow=K,byrow=TRUE)
 
 
-#Testing to see if my first Error message works:
+# Testing to see if my first Error message works:
 set.seed(12)
 X<-sample(seq(1:100),10)
 K <- 3
 M <- c(10,90)
 
-#Checking my speed for now
+# Checking my speed for now
 numIter <- 10000
 M <- NULL
 
@@ -43,7 +44,7 @@ Y <- c(rep(0,length(X)))
 Mnew <- c(rep(NULL,K))
 counter <- 0
 
-#Using Microbenchmark to check speed
+# Using Microbenchmark to check speed
 microbenchmark(
   while(counter != numIter){
     counter <- counter + 1
@@ -77,12 +78,26 @@ microbenchmark(
 microbenchmark(
   MyKmeans(X,K,M = c(10,90,30),numIter=10000)
 )
-##Using Rprof() to check for bottle necks
+## Using Rprof() to check for bottle necks
 Rprof()
 invisible(MyKmeans(X,K,M = c(10,80,30),numIter=1000))
 Rprof(NULL)
 summaryRprof()
 
-#I am attempting to break my function by removing a cluster to see if
+# I am attempting to break my function by removing a cluster to see if
 # My error message will work. 
 MyKmeans(X,K,M = c(10,5,2),numIter=10000)
+
+
+# Creating a new test with a set of 3D coordinates
+set.seed(12)
+x <- sample(1:100,10)
+set.seed(20)
+y <- sample(1:100,10)
+set.seed(300)
+z <- sample(1:100,10)
+K <- 5
+
+data <- matrix(c(x,y,z),byrow=FALSE,nrow=10)
+
+MyKmeans(data,K)
