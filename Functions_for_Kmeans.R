@@ -39,3 +39,11 @@ for(j in 1:K){ # 8 Milliseconds seems to be my longest running piece.
     break
   }
 }
+
+
+##Trying to create a for loop that will iterate through each value of M on each X
+for(j in 1:nrow(X)){
+  apply(M,2,function(X) {norm((X[j,] - M),type="2")})
+}
+
+## Maybe try a double apply where you go through each row and then column?
