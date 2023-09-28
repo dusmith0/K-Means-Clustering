@@ -64,7 +64,17 @@ for (i in 1:length(X)){
 
 Y
 
+## This is the original script for creating the values of M if M=NULL
 
+if(is.null(M) & !is.matrix(X)){
+  M <- (sample(X,K,replace=FALSE))
+}
+
+#selection of points from X if X is a matrix This tests at 1.2 microseconds
+if(is.null(M) & is.matrix(X)){
+  rows_data <- sample(nrow(X),K,replace=FALSE)
+  M <- X[rows_data,]
+}
 
 
 

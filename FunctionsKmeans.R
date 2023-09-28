@@ -8,17 +8,6 @@
 
 # Building a function to place into an apply statement
 
-if(is.null(M)){
-  ifelse(!is.matrix(X), 
-         (M <- sample(X,K,replace=FALSE)) , 
-  ifelse(is.matrix(X),
-         {rows_data <- sample(nrow(X),K,replace=FALSE);
-          M <- X[rows_data,]},
-    M <- M
-    )
-  )
-} #This is about 300 nanoseconds shorter then what is below. Not sure if that is 
-# really worth the effort. Also if M is not a matrix or vector, I am not certain what this will do.
 
 
 MyKmeans <- function(X, K, M = NULL, numIter = 100){
@@ -26,16 +15,18 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
   # Check whether M is NULL or not. If NULL, initialize based on K randomly 
   # selected points from X.
 
-  if(is.null(M) & !is.matrix(X)){
-    M <- (sample(X,K,replace=FALSE))
-  }
-
-  #selection of points from X if X is a matrix This tests at 1.2 microseconds
-  if(is.null(M) & is.matrix(X)){
-    rows_data <- sample(nrow(X),K,replace=FALSE)
-    M <- X[rows_data,]
-  }
-
+  if(is.null(M)){
+    ifelse(!is.matrix(X), 
+           (M <- sample(X,K,replace=FALSE)) , 
+           ifelse(is.matrix(X),
+                  {rows_data <- sample(nrow(X),K,replace=FALSE);
+                  M <- X[rows_data,]},
+                  M <- M
+           )
+    )
+  } #This is about 300 nanoseconds shorter then what is below. Not sure if that is 
+  # really worth the effort. Also if M is not a matrix or vector, I am not certain what this will do.
+  
   # If not NULL, check for compatibility with X dimensions and K.
   
   # Checking length of M to match that of K.
