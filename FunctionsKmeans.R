@@ -11,18 +11,16 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
   # selected points from X.
 
   if(is.null(M)){
-    M <- rep(0,K)
-    ifelse(!is.matrix(X), 
+    ifelse((!is.matrix(X) == TRUE), 
            (M <- sample(X,K,replace=FALSE)) , 
-           ifelse(is.matrix(X),
+           ifelse((is.matrix(X) == TRUE),
                   {rows_data <- sample(nrow(X),K,replace=FALSE);
                   M <- X[rows_data,]},
                   M <- M
            )
     )
   } 
-  return(M)
-}
+
   # This is about 300 nanoseconds shorter then what is below. Not sure if that is 
   # really worth the effort. Also if M is not a matrix or vector, I am not certain what this will do.
   
@@ -99,8 +97,8 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
     }
 
     # Break option 1 the centroids don't change from one iteration to the next (exactly the same),
-      if(identical(M,Mnew)){
-        break
+      if(identical(M,Mnew) == TRUE){
+        warning(paste("Function ended Early as the Mnew converged before the interation limit was met."))
       }
 
     # Break option (iii) one of the clusters has disappeared after one of the iterations (in which case the error message is returned)
