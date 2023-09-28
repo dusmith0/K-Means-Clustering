@@ -1,6 +1,6 @@
 ### This file contains functions that can be used in FunctionsKmeans.R
 
-## For calculating the clusters:
+## For calculating the clusters on non-matrix data
 diff_clusters <- function(Data,M){
   diff <- apply(as.matrix(Data),c(1:2),function(Data) {sqrt((Data - M)^2)})
   clusters <- apply(diff,2,function(z) which(z == min(z)))
@@ -8,18 +8,28 @@ diff_clusters <- function(Data,M){
   return(clusters)
 }
 
-## This is my first attempt at building a For loop for what the above did.
-# Y <- c(rep(0,length(X)))
 
-for (i in 1:length(X)){ 
-  diff <- rep(0,K)
-  diff <- (sqrt((X[i] - c(M))^2))
-  # return(diff)
-  Y[i] <- which(diff == min(diff))
-  # assign("Y[i]",which(diff == min(diff)),envir = .GlobalEnv)
+## Maybe try a double apply where you go through each row and then column?
+find_diff <- function(X,M){
+  diff <- matrix(rep(0,(nrow(X)*nrow(M))),nrow=nrow(X))
+  
+  for(i in 1:nrow(X)){
+    for(j in 1:nrow(M)){
+      #diff <- sapply(X,function (X) {norm((X[i,] - M[j,]),type="2")})
+      diff[i,j] <- norm((X[i,] - M[j,]),type="2") 
+    }
+  }
 }
 
-Y
+diff
+
+
+
+
+
+
+######Functions below this line are not being used in my MyKmeans function
+###### They are simply old functions that I had at some point. 
  
 # These are other attempts to find the new k-means. I will keep it for now in the 
 # case where these may actually be faster then the code I kept. 
@@ -41,21 +51,19 @@ for(j in 1:K){ # 8 Milliseconds seems to be my longest running piece.
 }
 
 
-##Trying to create a for loop that will iterate through each value of M on each X
-for(j in 1:nrow(X)){
-  apply(M,2,function(X) {norm((X[j,] - M),type="2")})
+## This is my first attempt at building a For loop for what the above did.
+# Y <- c(rep(0,length(X)))
+
+for (i in 1:length(X)){ 
+  diff <- rep(0,K)
+  diff <- (sqrt((X[i] - c(M))^2))
+  # return(diff)
+  Y[i] <- which(diff == min(diff))
+  # assign("Y[i]",which(diff == min(diff)),envir = .GlobalEnv)
 }
 
-diff <- matrix(rep(0,(nrow(X)*nrow(M))),nrow=nrow(X))
-## Maybe try a double apply where you go through each row and then column?
-for(i in 1:nrow(X)){
-  for(j in 1:nrow(M)){
-    #diff <- sapply(X,function (X) {norm((X[i,] - M[j,]),type="2")})
-    diff[i,j] <- norm((X[i,] - M[j,]),type="2") 
-  }
-}
+Y
 
-diff
 
 
 
