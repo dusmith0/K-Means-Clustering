@@ -58,6 +58,7 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
   Mnew <- c(rep(NULL,K))
   counter <- 0
 
+
   # Implement K-means algorithm.
   # Break option (ii) the maximal number of iterations was reached
   while(counter != numIter){
@@ -76,14 +77,15 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
           #diff <- sapply(X,function (X) {norm((X[i,] - M[j,]),type="2")})
           diff[i,j] <- norm((X[i,] - M[j,]),type="2") 
         }
-        
-        else{
+       }
+     }
+        else {
           # For finding Euclidean Differences, and selecting the clusters
           diff <- apply(as.matrix(X),c(1,2),function(X) {sqrt((X - M) ^ 2)}) #104 microseconds
           #    diff <- apply(X,1,function (X) {norm((X - M),type="2")})
           clusters <- apply(diff,2,function(z) which(z == min(z))) #203 Microseconds
         }
-      }
+      
     }
 
     # clusters <- apply(diff,2,function(z) which.min(diff)) #65 Microseconds
@@ -106,7 +108,8 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
       }
   
     # Return the vector of assignments Y
-  }
   Y <- clusters
   return(Y)
- }
+}
+  
+

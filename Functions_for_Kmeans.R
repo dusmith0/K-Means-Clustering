@@ -11,13 +11,22 @@ diff_clusters <- function(Data,M){
 
 ## Maybe try a double apply where you go through each row and then column?
 find_diff <- function(X,M){
-  diff <- matrix(rep(0,(nrow(X)*nrow(M))),nrow=nrow(X))
   
-  for(i in 1:nrow(X)){
-    for(j in 1:nrow(M)){
-      #diff <- sapply(X,function (X) {norm((X[i,] - M[j,]),type="2")})
-      diff[i,j] <- norm((X[i,] - M[j,]),type="2") 
+  if(is.matrix(X) == TRUE){
+    diff <- matrix(rep(0,(nrow(X)*nrow(M))),nrow=nrow(X))
+    # This loops through each row of X and computes the norm against each row of M.
+    for(i in 1:nrow(X)){
+      for(j in 1:nrow(M)){
+        #diff <- sapply(X,function (X) {norm((X[i,] - M[j,]),type="2")})
+        diff[i,j] <- norm((X[i,] - M[j,]),type="2") 
+      }
     }
+  }
+  else {
+    # For finding Euclidean Differences, and selecting the clusters
+    diff <- apply(as.matrix(X),c(1,2),function(X) {sqrt((X - M) ^ 2)}) #104 microseconds
+    #    diff <- apply(X,1,function (X) {norm((X - M),type="2")})
+    clusters <- apply(diff,2,function(z) which(z == min(z))) #203 Microseconds
   }
 }
 
