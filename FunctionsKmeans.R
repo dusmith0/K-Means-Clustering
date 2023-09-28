@@ -11,14 +11,14 @@
 if(is.null(M)){
   ifelse(!is.matrix(X), 
          (M <- sample(X,K,replace=FALSE)) , 
-  ifelse(!is.matrix(X),
+  ifelse(is.matrix(X),
          {rows_data <- sample(nrow(X),K,replace=FALSE);
           M <- X[rows_data,]},
-    break
+    M <- M
     )
   )
 } #This is about 300 nanoseconds shorter then what is below. Not sure if that is 
-# really worth the effort.
+# really worth the effort. Also if M is not a matrix or vector, I am not certain what this will do.
 
 
 MyKmeans <- function(X, K, M = NULL, numIter = 100){
