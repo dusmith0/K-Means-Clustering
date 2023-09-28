@@ -46,4 +46,19 @@ for(j in 1:nrow(X)){
   apply(M,2,function(X) {norm((X[j,] - M),type="2")})
 }
 
+diff <- matrix(rep(0,(nrow(X)*nrow(M))),nrow=nrow(X))
 ## Maybe try a double apply where you go through each row and then column?
+for(i in 1:nrow(X)){
+  for(j in 1:nrow(M)){
+    #diff <- sapply(X,function (X) {norm((X[i,] - M[j,]),type="2")})
+    diff[i,j] <- norm((X[i,] - M[j,]),type="2") 
+  }
+}
+
+diff
+
+
+
+
+
+
