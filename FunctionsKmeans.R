@@ -92,7 +92,7 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
     # This Piece is for re-evaluating the k-means
 
     for(i in 1:K){
-      Mnew[i] <- mean(X[which(clusters == i)])
+      Mnew[i] <- mean(X[which(clusters == i),])
     }
 
     # Break option 1 the centroids don't change from one iteration to the next (exactly the same),
