@@ -5,37 +5,27 @@
 # numIter - number of maximal iterations for the algorithm, the default value is 100
 
 
-
-# Building a function to place into an apply statement
-
-if(is.null(M)){
-  ifelse(!is.matrix(X), 
-         (M <- sample(X,K,replace=FALSE)) , 
-  ifelse(!is.matrix(X),
-         {rows_data <- sample(nrow(X),K,replace=FALSE);
-          M <- X[rows_data,]},
-    break
-    )
-  )
-} #This is about 300 nanoseconds shorter then what is below. Not sure if that is 
-# really worth the effort.
-
-
 MyKmeans <- function(X, K, M = NULL, numIter = 100){
  
   # Check whether M is NULL or not. If NULL, initialize based on K randomly 
   # selected points from X.
 
-  if(is.null(M) & !is.matrix(X)){
-    M <- (sample(X,K,replace=FALSE))
-  }
-
-  #selection of points from X if X is a matrix This tests at 1.2 microseconds
-  if(is.null(M) & is.matrix(X)){
-    rows_data <- sample(nrow(X),K,replace=FALSE)
-    M <- X[rows_data,]
-  }
-
+  if(is.null(M)){
+    M <- rep(0,K)
+    ifelse(!is.matrix(X), 
+           (M <- sample(X,K,replace=FALSE)) , 
+           ifelse(is.matrix(X),
+                  {rows_data <- sample(nrow(X),K,replace=FALSE);
+                  M <- X[rows_data,]},
+                  M <- M
+           )
+    )
+  } 
+  return(M)
+}
+  # This is about 300 nanoseconds shorter then what is below. Not sure if that is 
+  # really worth the effort. Also if M is not a matrix or vector, I am not certain what this will do.
+  
   # If not NULL, check for compatibility with X dimensions and K.
   
   # Checking length of M to match that of K.
@@ -59,6 +49,7 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
                in M (guessed centers) match that of X (your data)"))
     }
   }
+  
   # Creating an empty variable to store clustered assignments, New K-means, and 
   # a counter for numIter.
   Y <- c(rep(0,length(X))) 
@@ -68,6 +59,7 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
   # Implement K-means algorithm.
   # Break option (ii) the maximal number of iterations was reached
   while(counter != numIter){
+    
     # Creating a Counter and merging the Mnew with M
     counter <- counter + 1
 
@@ -75,16 +67,35 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
       M <- Mnew
     }
   
-    # For finding Euclidean Differences, and selecting the clusters
-    diff <- apply(as.matrix(X),c(1,2),function(X) {sqrt((X - M) ^ 2)}) #104 microseconds
-#    diff <- apply(X,1,function (X) {norm((X - M),type="2")})
-    clusters <- apply(diff,2,function(z) which(z == min(z))) #203 Microseconds
-
-    # clusters <- apply(diff,2,function(z) which.min(diff)) #65 Microseconds
-    # This Piece is for re-evaluating the k-means
-
-    for(i in 1:K){
-      Mnew[i] <- mean(X[which(clusters == i)])
+    if(is.matrix(X) == TRUE){
+      diff <- matrix(rep(0,(nrow(X)*nrow(M))),nrow=nrow(X))
+      # This loops through each row of X and computes the norm against each row of M.
+      for(i in 1:nrow(X)){
+        for(j in 1:nrow(M)){
+          #diff <- sapply(X,function (X) {norm((X[i,] - M[j,]),type="2")})
+          diff[i,j] <- norm((X[i,] - M[j,]),type="2") 
+        }
+      }
+        # clusters <- apply(diff,2,function(z) which.min(diff)) #65 Microseconds
+        # This Piece is for re-evaluating the k-means
+        clusters <- apply(diff,1,function(z) which(z == min(z)))
+        for(i in 1:K){
+          Mnew[i] <- mean(X[which(clusters == i),])
+        }
+     }
+        else {
+          # For finding Euclidean Differences, and selecting the clusters
+          diff <- apply(as.matrix(X),c(1,2),function(X) {sqrt((X - M) ^ 2)}) #104 microseconds
+          #    diff <- apply(X,1,function (X) {norm((X - M),type="2")})
+          
+          # clusters <- apply(diff,2,function(z) which.min(diff)) #65 Microseconds
+          # This Piece is for re-evaluating the k-means
+          clusters <- apply(diff,2,function(z) which(z == min(z))) #203 Microseconds
+          for(i in 1:K){
+            Mnew[i] <- mean(X[which(clusters == i)])
+          }
+        }
+      
     }
 
     # Break option 1 the centroids don't change from one iteration to the next (exactly the same),
@@ -100,7 +111,8 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
       }
   
     # Return the vector of assignments Y
-  }
   Y <- clusters
   return(Y)
- }
+}
+  
+
