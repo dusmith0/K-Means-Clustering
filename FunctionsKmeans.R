@@ -24,7 +24,8 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
                   M <- M
            )
     )
-  } #This is about 300 nanoseconds shorter then what is below. Not sure if that is 
+  } 
+  # This is about 300 nanoseconds shorter then what is below. Not sure if that is 
   # really worth the effort. Also if M is not a matrix or vector, I am not certain what this will do.
   
   # If not NULL, check for compatibility with X dimensions and K.
@@ -50,6 +51,7 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
                in M (guessed centers) match that of X (your data)"))
     }
   }
+  
   # Creating an empty variable to store clustered assignments, New K-means, and 
   # a counter for numIter.
   Y <- c(rep(0,length(X))) 
@@ -66,10 +68,23 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
       M <- Mnew
     }
   
-    # For finding Euclidean Differences, and selecting the clusters
-    diff <- apply(as.matrix(X),c(1,2),function(X) {sqrt((X - M) ^ 2)}) #104 microseconds
-#    diff <- apply(X,1,function (X) {norm((X - M),type="2")})
-    clusters <- apply(diff,2,function(z) which(z == min(z))) #203 Microseconds
+    if(is.matrix(X) == TRUE){
+      diff <- matrix(rep(0,(nrow(X)*nrow(M))),nrow=nrow(X))
+      # This loops through each row of X and computes the norm against each row of M.
+      for(i in 1:nrow(X)){
+        for(j in 1:nrow(M)){
+          #diff <- sapply(X,function (X) {norm((X[i,] - M[j,]),type="2")})
+          diff[i,j] <- norm((X[i,] - M[j,]),type="2") 
+        }
+        
+        else{
+          # For finding Euclidean Differences, and selecting the clusters
+          diff <- apply(as.matrix(X),c(1,2),function(X) {sqrt((X - M) ^ 2)}) #104 microseconds
+          #    diff <- apply(X,1,function (X) {norm((X - M),type="2")})
+          clusters <- apply(diff,2,function(z) which(z == min(z))) #203 Microseconds
+        }
+      }
+    }
 
     # clusters <- apply(diff,2,function(z) which.min(diff)) #65 Microseconds
     # This Piece is for re-evaluating the k-means
