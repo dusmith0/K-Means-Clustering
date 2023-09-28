@@ -77,7 +77,8 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
           #diff <- sapply(X,function (X) {norm((X[i,] - M[j,]),type="2")})
           diff[i,j] <- norm((X[i,] - M[j,]),type="2") 
         }
-       }
+      }
+        clusters <- apply(diff,1,function(z) which(z == min(z)))
      }
         else {
           # For finding Euclidean Differences, and selecting the clusters
