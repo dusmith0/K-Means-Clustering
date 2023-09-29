@@ -104,6 +104,11 @@ microbenchmark(
 MyKmeans(data,K)
 )
 
+Rprof()
+invisible(MyKmeans(data,K))
+Rprof(NULL)
+summaryRprof()
+
 microbenchmark(
   kmeans(data,K)
 )
