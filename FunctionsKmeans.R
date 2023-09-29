@@ -67,14 +67,7 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
     }
     
     if(is.matrix(X) == TRUE){
-       diff <- matrix(rep(0,(nrow(X)*nrow(M))),nrow=nrow(X))
-      # This loops through each row of X and computes the norm against each row of M.
-      for(i in 1:nrow(X)){
-        for(j in 1:nrow(M)){
-          #diff <- sapply(X,function (X) {norm((X[i,] - M[j,]),type="2")})
-          diff[i,j] <- norm((X[i,] - M[j,]),type="2") 
-        }
-      }
+      diff <- sqrt(abs(rowSums((X^2), dims = 1) - 2 * (X %*% t(M)) + rowSums((M^2), dims = 1)))
       clusters <- apply(diff,1,function(z) which(z == min(z)))
     }
     else {
@@ -84,10 +77,17 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
       clusters <- apply(diff,2,function(z) which(z == min(z))) #203 Microseconds
     }
     
+      # Break option (iii) one of the clusters has disappeared after one of the iterations (in which case the error message is returned)
+    if((length(table(clusters)) != K)){
+      stop(paste("Note: The function completely removed one cluster with the chosen
+                  values of M. Please generate or choose a different set of initial clusters
+                  and attempt the function again."))
+    }
+    
     # clusters <- apply(diff,2,function(z) which.min(diff)) #65 Microseconds
-  # This Piece is for re-evaluating the k-means
-  # 7.56 milliseconds
-
+    # This Piece is for re-evaluating the k-means
+    # 7.56 milliseconds
+  }
   for(i in 1:K){
     if(sum(clusters ==i) > 1){
     Mnew[i,] <- colMeans(X[which(clusters == i),])
@@ -101,14 +101,7 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
     break
   }
   
-  # Break option (iii) one of the clusters has disappeared after one of the iterations (in which case the error message is returned)
-  if(any(is.nan(Mnew))){
-    stop(paste("Note: The function completely removed one cluster with the chosen
-                  values of M. Please generate or choose a different set of initial clusters
-                  and attempt the function again."))
-  }
-}
-  # Return the vector of assignments Y
+   # Return the vector of assignments Y
   Y <- clusters
   return(Y)
 }
