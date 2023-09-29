@@ -101,7 +101,7 @@ K <- 5
 X <- data <- matrix(c(x,y,z),byrow=FALSE,nrow=10)
 
 microbenchmark(
-MyKmeans(data,K)
+MyKmeans(data,K,numIter = 100000)
 )
 
 Rprof()
@@ -110,7 +110,7 @@ Rprof(NULL)
 summaryRprof()
 
 microbenchmark(
-  kmeans(data,K)
+  kmeans(data,K,algorithm = "Lloyd")
 )
 
 ##Trying to create a large set of data to see if my function is working or not.
