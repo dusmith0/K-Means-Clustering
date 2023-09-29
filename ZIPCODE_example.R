@@ -18,14 +18,13 @@ X <- zipcode[ , -1]
 # [ToDo] Try K-means algorithm nRep times with different starting points
 # on ZIPCODE data. Calculate Rand Index at each replication
 nRep <- 50
-r <- rep(NULL,nRep)
+r <- rep(0,nRep)
 
 # With the base kmeans to compair
 for(i in 1:nRep){
-  microbenchmark(  
-  cluster <- kmeans(X,10)
-  )
-
+   
+  cluster <- kmeans(X,10)$cluster #700 milliseconds median
+  
   r[i] <- rand.index(Y,cluster)
   
 }
@@ -36,7 +35,7 @@ r <- rep(NULL,nRep)
 
 for(i in 1:nRep){
   microbenchmark(  
-    cluster <- MyKmeans(X,10)
+    cluster <- MyKmeans(X,10,numIter = 2)
   )
   
   r[i] <- rand.index(Y,cluster)

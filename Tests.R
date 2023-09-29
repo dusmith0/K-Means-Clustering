@@ -100,4 +100,39 @@ K <- 5
 
 X <- data <- matrix(c(x,y,z),byrow=FALSE,nrow=10)
 
-MyKmeans(data,K)
+microbenchmark(
+MyKmeans(data,K,numIter = 100000)
+)
+
+Rprof()
+invisible(MyKmeans(data,K))
+Rprof(NULL)
+summaryRprof()
+
+microbenchmark(
+  kmeans(data,K,algorithm = "Lloyd")
+)
+
+##Trying to create a large set of data to see if my function is working or not.
+set.seed(12)
+x <- sample(1:100,20)
+set.seed(20)
+y <- sample(1:100,20)
+set.seed(300)
+z <- sample(1:100,20)
+K <- 5
+
+X <- data <- matrix(c(x,y,z),byrow=FALSE,nrow=20)
+
+microbenchmark(
+  MyKmeans(data,K)
+) #ran at 22.747 milliseconds
+
+
+microbenchmark(
+  kmeans(data,K)
+) #ran at 318 microseconds
+
+
+
+
