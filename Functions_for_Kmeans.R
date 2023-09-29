@@ -97,7 +97,7 @@ Mnew <- apply(X,1, function(X) mean(X[which(clusters == c(j)),]))
 if(is.matrix(X) == TRUE){
   diff <- matrix(rep(0,(nrow(X)*nrow(M))),nrow=nrow(X))
   # This loops through each row of X and computes the norm against each row of M.
-  for(c(i:j) in c(1:nrow(X),1:nrow(M)){
+  for(i in 1:nrow(X)){
     for(j in 1:nrow(M)){
       #diff <- sapply(X,function (X) {norm((X[i,] - M[j,]),type="2")})
       diff[i,j] <- norm((X[i,] - M[j,]),type="2") 

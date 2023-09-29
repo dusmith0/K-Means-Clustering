@@ -52,17 +52,12 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
   # Creating an empty variable to store clustered assignments, New K-means, and 
   # a counter for numIter.
   Y <- c(rep(0,length(X)))
-  if(is.matrix(X)){
-  Mnew <- matrix(rep(0),nrow=nrow(M),ncol=ncol(M))
-  }
-  else{
-    Mnew <- c(rep(0,K))
-  }
   counter <- 0
   
-  # 45 Milliseconds I thought this was the long part. 
-  # Implement K-means algorithm.
-  # Break option (ii) the maximal number of iterations was reached
+  ### this bit runs if the X value supplied is a vector.
+  if(!is.matrix(X)){
+    Mnew <- c(rep(0,K))
+  
   while(counter != numIter){
     # Creating a Counter and merging the Mnew with M
     counter <- counter + 1
@@ -70,8 +65,55 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
     if(counter != 1){ #1125 nano-seconds
       M <- Mnew
     }
+    # For finding Euclidean Differences, and selecting the clusters
+    diff <- apply(as.matrix(X),c(1,2),function(X) {sqrt((X - M) ^ 2)}) #104 microseconds
+    #    diff <- apply(X,1,function (X) {norm((X - M),type="2")})
+    clusters <- apply(diff,2,function(z) which(z == min(z))) #203 Microseconds
+    
+    # Break option (iii) one of the clusters has disappeared after one of the iterations (in which case the error message is returned)
+    if((length(table(clusters)) != K)){
+      stop(paste("Note: The function completely removed one cluster with the chosen
+                  values of M. Please generate or choose a different set of initial clusters
+                  and attempt the function again."))
+    }
+    
+    # clusters <- apply(diff,2,function(z) which.min(diff)) #65 Microseconds
+    # This Piece is for re-evaluating the k-means
+    # 7.56 milliseconds
+  
+  for(i in 1:K){
+    if(sum(clusters ==i) > 1){
+      Mnew[i] <- mean(X[which(clusters == i)])
+    }
+    else{
+      Mnew[i] <- X[which(clusters == i)]
+    }
+  }
+  # Break option 1 the centroids don't change from one iteration to the next (exactly the same),
+  if(identical(M,Mnew)){
+    break
+  }
+  }
+  }
+  
+  ## This bit runs if the X provided is a Matrix
+  if(is.matrix(X)){
+  Mnew <- matrix(rep(0),nrow=nrow(M),ncol=ncol(M))
+  
+  # 45 Milliseconds I thought this was the long part. 
+  # Implement K-means algorithm.
+  # Break option (ii) the maximal number of iterations was reached
+  
      #12 milliseconds for the norm
+  while(counter != numIter){
+    # Creating a Counter and merging the Mnew with M
+    counter <- counter + 1
+    diff <- matrix(rep(0,(nrow(X)*nrow(M))),nrow=nrow(X))
+    if(counter != 1){ #1125 nano-seconds
+      M <- Mnew
+    }
     if(is.matrix(X) == TRUE){
+      
       for(i in 1:nrow(X)){
         for(j in 1:nrow(M)){
           diff[i,j] <- norm((X[i,] - M[j,]),type="2") 
@@ -80,12 +122,6 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
       clusters <- apply(diff,1,function(z) which(z == min(z)))
     }
     
-    else {
-      # For finding Euclidean Differences, and selecting the clusters
-      diff <- apply(as.matrix(X),c(1,2),function(X) {sqrt((X - M) ^ 2)}) #104 microseconds
-      #    diff <- apply(X,1,function (X) {norm((X - M),type="2")})
-      clusters <- apply(diff,2,function(z) which(z == min(z))) #203 Microseconds
-    }
     
       # Break option (iii) one of the clusters has disappeared after one of the iterations (in which case the error message is returned)
     if((length(table(clusters)) != K)){
@@ -97,7 +133,7 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
     # clusters <- apply(diff,2,function(z) which.min(diff)) #65 Microseconds
     # This Piece is for re-evaluating the k-means
     # 7.56 milliseconds
-  }
+  
   for(i in 1:K){
     if(sum(clusters ==i) > 1){
     Mnew[i,] <- colMeans(X[which(clusters == i),])
@@ -110,7 +146,9 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
   if(identical(M,Mnew)){
     break
   }
-  
+}
+}
+
    # Return the vector of assignments Y
   Y <- clusters
   return(Y)
