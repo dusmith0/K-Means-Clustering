@@ -52,7 +52,12 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
   # Creating an empty variable to store clustered assignments, New K-means, and 
   # a counter for numIter.
   Y <- c(rep(0,length(X)))
+  if(is.matrix(X)){
   Mnew <- matrix(rep(0),nrow=nrow(M),ncol=ncol(M))
+  }
+  else{
+    Mnew <- c(rep(0,K))
+  }
   counter <- 0
   
   # 45 Milliseconds I thought this was the long part. 
@@ -65,11 +70,16 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
     if(counter != 1){ #1125 nano-seconds
       M <- Mnew
     }
-    
+     #12 milliseconds for the norm
     if(is.matrix(X) == TRUE){
-      diff <- sqrt(abs(rowSums((X^2), dims = 1) - 2 * (X %*% t(M)) + rowSums((M^2), dims = 1)))
+      for(i in 1:nrow(X)){
+        for(j in 1:nrow(M)){
+          diff[i,j] <- norm((X[i,] - M[j,]),type="2") 
+        }
+      }
       clusters <- apply(diff,1,function(z) which(z == min(z)))
     }
+    
     else {
       # For finding Euclidean Differences, and selecting the clusters
       diff <- apply(as.matrix(X),c(1,2),function(X) {sqrt((X - M) ^ 2)}) #104 microseconds
