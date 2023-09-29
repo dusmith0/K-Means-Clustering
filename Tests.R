@@ -100,4 +100,10 @@ K <- 5
 
 X <- data <- matrix(c(x,y,z),byrow=FALSE,nrow=10)
 
+microbenchmark(
 MyKmeans(data,K)
+)
+
+microbenchmark(
+  kmeans(data,K)
+)
