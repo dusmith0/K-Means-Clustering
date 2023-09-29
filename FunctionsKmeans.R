@@ -84,9 +84,7 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
       clusters <- apply(diff,2,function(z) which(z == min(z))) #203 Microseconds
     }
     
-  }
-  
-  # clusters <- apply(diff,2,function(z) which.min(diff)) #65 Microseconds
+    # clusters <- apply(diff,2,function(z) which.min(diff)) #65 Microseconds
   # This Piece is for re-evaluating the k-means
   # 7.56 milliseconds
 
@@ -95,7 +93,7 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
     Mnew[i,] <- colMeans(X[which(clusters == i),])
     }
     else{
-      Mnew[i,] <- X[which(clusters == i)]
+      Mnew[i,] <- X[which(clusters == i),]
     }
   }
   # Break option 1 the centroids don't change from one iteration to the next (exactly the same),
@@ -109,7 +107,7 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
                   values of M. Please generate or choose a different set of initial clusters
                   and attempt the function again."))
   }
-  
+}
   # Return the vector of assignments Y
   Y <- clusters
   return(Y)

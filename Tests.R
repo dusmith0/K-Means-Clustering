@@ -125,8 +125,8 @@ K <- 5
 X <- data <- matrix(c(x,y,z),byrow=FALSE,nrow=20)
 
 microbenchmark(
-  myKmeans(data,K)
-) #ran at 1278 milliseconds
+  MyKmeans(data,K)
+) #ran at 22.747 milliseconds
 
 
 microbenchmark(
