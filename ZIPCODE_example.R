@@ -23,7 +23,7 @@ r <- rep(NULL,nRep)
 # With the base kmeans to compair
 for(i in 1:nRep){
   microbenchmark(  
-  cluster <- kmeans(X,10)
+  cluster <- kmeans(X,10) #700 milliseconds median
   )
 
   r[i] <- rand.index(Y,cluster)
@@ -36,7 +36,7 @@ r <- rep(NULL,nRep)
 
 for(i in 1:nRep){
   microbenchmark(  
-    cluster <- MyKmeans(X,10)
+    cluster <- MyKmeans(X,10,numIter = 10)
   )
   
   r[i] <- rand.index(Y,cluster)

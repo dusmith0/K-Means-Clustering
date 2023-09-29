@@ -67,7 +67,7 @@ microbenchmark( #600 nanoseconds
     }
     
     if(is.matrix(X) == TRUE){
-      diff <- matrix(rep(0,(nrow(X)*nrow(M))),nrow=nrow(X))
+       diff <- matrix(rep(0,(nrow(X)*nrow(M))),nrow=nrow(X))
       # This loops through each row of X and computes the norm against each row of M.
       for(i in 1:nrow(X)){
         for(j in 1:nrow(M)){

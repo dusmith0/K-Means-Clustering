@@ -85,6 +85,37 @@ if(is.null(M) & is.matrix(X)){
   M <- X[rows_data,]
 }
 
+#Trying to vectorize the creating new means part. 
+for(i in 1:K){
+  Mnew[i] <- mean(X[which(clusters == i),])
+}
+
+j <- c(1:K)
+Mnew <- apply(X,1, function(X) mean(X[which(clusters == c(j)),]))
+
+
+if(is.matrix(X) == TRUE){
+  diff <- matrix(rep(0,(nrow(X)*nrow(M))),nrow=nrow(X))
+  # This loops through each row of X and computes the norm against each row of M.
+  for(i in 1:nrow(X)){
+    for(j in 1:nrow(M)){
+      #diff <- sapply(X,function (X) {norm((X[i,] - M[j,]),type="2")})
+      diff[i,j] <- norm((X[i,] - M[j,]),type="2") 
+    }
+  }
+}
+
+diff <- apply(X,1,function(X) apply(X,2, function(z) norm((X - M),type="2")))
+
+diff <- sqrt(rowSums((X^2), dims = 1) - 2 * (X %*% t(M)) + rowSums((M^2), dims = 1))
+##The above does not produce correct values
+diff <- norm((X %*% t(M)),type="2")
+
+diff <- abs(norm(X,type="2")- norm(M))
+
+diff <- matrix(sqrt(colSums(X%*%t(M))), nrow=nrow(X), byrow=TRUE)
+
+
 
 
 
