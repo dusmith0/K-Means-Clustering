@@ -107,13 +107,15 @@ if(is.matrix(X) == TRUE){
 
 diff <- apply(X,1,function(X) apply(X,2, function(z) norm((X - M),type="2")))
 
-diff <- sqrt(rowSums((X^2), dims = 1) - 2 * (X %*% t(M)) + rowSums((M^2), dims = 1))
+diff <- sqrt(abs(rowSums((X^2), dims = 1) - 2 * (X %*% t(M)) + rowSums((M^2), dims = 1)))
 ##The above does not produce correct values
 diff <- norm((X %*% t(M)),type="2")
 
 diff <- abs(norm(X,type="2")- norm(M))
 
 diff <- matrix(sqrt(colSums(X%*%t(M))), nrow=nrow(X), byrow=TRUE)
+
+diff <- apply(X,c(1,2), function(X) X - M)
 
 
 

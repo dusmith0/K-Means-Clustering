@@ -9,7 +9,7 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
   
   # Check whether M is NULL or not. If NULL, initialize based on K randomly 
   # selected points from X.
-microbenchmark( #600 nanoseconds 
+  # 600 nanoseconds 
   if(is.null(M)){
     ifelse(!is.matrix(X), 
            (M <- sample(X,K,replace=FALSE)) , 
@@ -20,19 +20,19 @@ microbenchmark( #600 nanoseconds
            )
     )
   } 
-)
+
   # This is about 300 nanoseconds shorter then what is below. Not sure if that is 
   # really worth the effort. Also if M is not a matrix or vector, I am not certain what this will do.
   
   # If not NULL, check for compatibility with X dimensions and K.
- microbenchmark( #2 microseconds
+  # 2 microseconds
   # Checking length of M to match that of K.
   if(K != length(M) & !is.matrix(M)){
     stop(paste("Error: The number of values you have for M=Starting Means, must match 
     the value you chose for K=Number of clusters."))
   }
- )
- microbenchmark( #6.7 microseconds
+ 
+  # 6.7 microseconds
   # Checking length of rows in M to match that of K
   if(is.matrix(M)){
     if(K != (nrow(M))){
@@ -48,21 +48,21 @@ microbenchmark( #600 nanoseconds
                in M (guessed centers) match that of X (your data)"))
     }
   }
- )
+ 
   # Creating an empty variable to store clustered assignments, New K-means, and 
   # a counter for numIter.
-  Y <- c(rep(0,length(X))) 
-  Mnew <- c(rep(NULL,K))
+  Y <- c(rep(0,length(X)))
+  Mnew <- matrix(rep(0),nrow=nrow(M),ncol=ncol(M))
   counter <- 0
   
-  microbenchmark( #45 Milliseconds I thought this was the long part. 
+  # 45 Milliseconds I thought this was the long part. 
   # Implement K-means algorithm.
   # Break option (ii) the maximal number of iterations was reached
   while(counter != numIter){
     # Creating a Counter and merging the Mnew with M
     counter <- counter + 1
     
-    if(is.null(Mnew) == FALSE){ #1125 nano-seconds
+    if(counter != 1){ #1125 nano-seconds
       M <- Mnew
     }
     
@@ -85,14 +85,19 @@ microbenchmark( #600 nanoseconds
     }
     
   }
-  )
+  
   # clusters <- apply(diff,2,function(z) which.min(diff)) #65 Microseconds
   # This Piece is for re-evaluating the k-means
- microbenchmark( #7.56 milliseconds
+  # 7.56 milliseconds
+
   for(i in 1:K){
-    Mnew[i] <- mean(X[which(clusters == i),])
+    if(sum(clusters ==i) > 1){
+    Mnew[i,] <- colMeans(X[which(clusters == i),])
+    }
+    else{
+      Mnew[i,] <- X[which(clusters == i)]
+    }
   }
- )
   # Break option 1 the centroids don't change from one iteration to the next (exactly the same),
   if(identical(M,Mnew)){
     break
