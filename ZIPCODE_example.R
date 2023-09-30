@@ -43,4 +43,8 @@ microbenchmark(
 (mean(r)) #I a mean Rand Index of .889 
 
 # [ToDo] Report mean run time for one replication on your machine
-# The mean run time is still increadibly slow, even with vectorization. 
+# The mean run time is still incredibly slow, even with vectorization. 
+# I was not able to run my function on the Zip data in a reasonable time. 
+# However, to compare on a toy example MyKmeans ran at 31 milliseconds
+# while base::kmeans ran at 515 microsecond. I am sorry I was not able to meet 
+# the time requirements. 
