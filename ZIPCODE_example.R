@@ -10,7 +10,7 @@ rand.index(cluster1, cluster2) # clusters match
 zipcode <- read.table("ZIPCODE.txt", header = F)
 
 # Extract the true digits
-Y <- zipcode[ , 1]
+Y <- zipcode[1:1000 , 1]
 
 # Extract the data points
 X <- zipcode[ , -1]
@@ -22,21 +22,25 @@ r <- rep(0,nRep)
 
 # With the base kmeans to compare
 for(i in 1:nRep){
-  cluster <- microbenchmark(kmeans(X,10)$cluster) 
+  cluster <- (kmeans(X,10)$cluster) 
   r[i] <- rand.index(Y,cluster)
 }
 
 # With MyKmeans
-nRep <- 50
+nRep <- 10
 r <- rep(NULL,nRep)
 
 for(i in 1:nRep){
-  cluster <- MyKmeans(X,10,numIter = 2)
-  r[i] <- rand.index(Y,cluster)
+  cluster <- MyKmeans(X,10,numIter = 1)
+  r <- rand.index(Y,cluster)
 }
 
+microbenchmark(
+  MyKmeans(X,10,numIter = 1)
+)
 
 # [ToDo] Report mean Rand Index
-(mean(r))
+(mean(r)) #I a mean Rand Index of .889 
 
 # [ToDo] Report mean run time for one replication on your machine
+# The mean run time is still increadibly slow, even with vectorization. 
