@@ -55,7 +55,7 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
   counter <- 0
   
   ### this bit runs if the X value supplied is a vector.
-  if(!is.matrix(X)){
+  if(!is.matrix(X) == FALSE){
     Mnew <- c(rep(0,K))
   
   while(counter != numIter){
@@ -112,17 +112,14 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
     if(counter != 1){ #1125 nano-seconds
       M <- Mnew
     }
-    if(is.matrix(X) == TRUE){
-      
-      for(i in 1:nrow(X)){
-        for(j in 1:nrow(M)){
-          diff[i,j] <- norm((X[i,] - M[j,]),type="2") 
+    for(i in 1:nrow(X)){
+      for(j in 1:nrow(M)){
+        diff[i,j] <- norm((X[i,] - M[j,]),type="2") 
         }
       }
-      clusters <- apply(diff,1,function(z) which(z == min(z)))
-    }
+    clusters <- apply(diff,1,function(z) which(z == min(z)))
     
-    
+ 
       # Break option (iii) one of the clusters has disappeared after one of the iterations (in which case the error message is returned)
     if((length(table(clusters)) != K)){
       stop(paste("Note: The function completely removed one cluster with the chosen
@@ -133,7 +130,7 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
     # clusters <- apply(diff,2,function(z) which.min(diff)) #65 Microseconds
     # This Piece is for re-evaluating the k-means
     # 7.56 milliseconds
-  
+
   for(i in 1:K){
     if(sum(clusters ==i) > 1){
     Mnew[i,] <- colMeans(X[which(clusters == i),])
@@ -142,6 +139,8 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
       Mnew[i,] <- X[which(clusters == i),]
     }
   }
+
+
   # Break option 1 the centroids don't change from one iteration to the next (exactly the same),
   if(identical(M,Mnew)){
     break

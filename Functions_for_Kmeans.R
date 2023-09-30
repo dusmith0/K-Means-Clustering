@@ -124,6 +124,23 @@ diff <- matrix(rep(0,(nrow(X)*nrow(M))),nrow=nrow(X))
 # This loops through each row of X and computes the norm against each row of M.
 
 
+for (i in 1:nrow(X)) {
+  diff[i,] <- sqrt(rowSums((X[i,] - M)^2))
+}
 
-
+Mnew[i,] <- sapply(1:K,function(z) {
+  ifelse((sum(clusters ==i)) > 1
+  ,colMeans(X[which(clusters == i)])
+  ,X[which(clusters == i),])
+  })
+  
+  
+for(i in 1:K){
+  if(sum(clusters ==i) > 1){
+    Mnew[i,] <- colMeans(X[which(clusters == i),])
+  }
+  else{
+    Mnew[i,] <- X[which(clusters == i),]
+  }
+}
 
