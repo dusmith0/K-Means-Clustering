@@ -20,13 +20,10 @@ X <- zipcode[ , -1]
 nRep <- 50
 r <- rep(0,nRep)
 
-# With the base kmeans to compair
+# With the base kmeans to compare
 for(i in 1:nRep){
-   
-  cluster <- kmeans(X,10)$cluster #700 milliseconds median
-  
+  cluster <- microbenchmark(kmeans(X,10)$cluster) 
   r[i] <- rand.index(Y,cluster)
-  
 }
 
 # With MyKmeans
@@ -34,12 +31,8 @@ nRep <- 50
 r <- rep(NULL,nRep)
 
 for(i in 1:nRep){
-  microbenchmark(  
-    cluster <- MyKmeans(X,10,numIter = 2)
-  )
-  
+  cluster <- MyKmeans(X,10,numIter = 2)
   r[i] <- rand.index(Y,cluster)
-  
 }
 
 

@@ -16,7 +16,7 @@ MyKmeans(X,K,numIter=1000)
 kmeans(X,K,M)
 kmeans(X,K)
 
-# Looking at what the kmeans algorithm produces.
+# The below data is for simple tests with MyKmeans.
 set.seed(12)
 X<-sample(seq(1:100),10)
 K <- 3
@@ -24,10 +24,6 @@ M <- c(10,50,30)
 M <- c(29,92,71)
 M <- c(sample(10,10,replace = TRUE))
 M <- NULL
-
-
-# The below code was my attempt to change the format of M to see what would happen.
-# M <- matrix(rep(M,length(X)),nrow=K,byrow=TRUE)
 
 
 # Testing to see if my first Error message works:
@@ -78,11 +74,14 @@ microbenchmark(
 microbenchmark(
   MyKmeans(X,K,M = c(10,90,30),numIter=10000)
 )
+
+
 ## Using Rprof() to check for bottle necks
 Rprof()
 invisible(MyKmeans(X,K,M = c(10,80,30),numIter=1000))
 Rprof(NULL)
 summaryRprof()
+
 
 # I am attempting to break my function by removing a cluster to see if
 # My error message will work. 
@@ -113,7 +112,7 @@ microbenchmark(
   kmeans(data,K,algorithm = "Lloyd")
 )
 
-##Trying to create a large set of data to see if my function is working or not.
+## Trying to create a large set of data to see if my function is working or not.
 set.seed(12)
 x <- sample(1:100,20)
 set.seed(20)
@@ -126,12 +125,12 @@ X <- data <- matrix(c(x,y,z),byrow=FALSE,nrow=20)
 
 microbenchmark(
   MyKmeans(data,K)
-) #ran at 22.747 milliseconds
+) # ran at 22.747 milliseconds
 
 
 microbenchmark(
   kmeans(data,K)
-) #ran at 318 microseconds
+) # ran at 318 microseconds
 
 
 
