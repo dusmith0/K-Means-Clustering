@@ -9,7 +9,6 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
   
   # Check whether M is NULL or not. If NULL, initialize based on K randomly 
   # selected points from X.
-  # 600 nanoseconds 
   if(is.null(M)){
     ifelse(!is.matrix(X), 
            (M <- sample(X,K,replace=FALSE)) , 
@@ -57,7 +56,7 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
         # Creating a Counter and merging the Mnew with M
         counter <- counter + 1
     
-        if(counter != 1){ #1125 nano-seconds
+        if(counter != 1){ 
           M <- Mnew
         }
         
@@ -93,8 +92,7 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
   ## This bit runs if the X provided is a Matrix
   if(is.matrix(X)){
      Mnew <- matrix(rep(0),nrow=nrow(M),ncol=ncol(M))
-  
-  
+ 
     # Implement K-means algorithm.
     # Break option (ii) the maximal number of iterations was reached
     while(counter != numIter){
@@ -106,7 +104,7 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
         M <- Mnew
       }
       
-      diff <- sapply(1:nrow(X),function(i) {
+      diff <- sapply(1:nrow(X),function(i){
               sapply(1:nrow(M),function(j){
               diff[i,j] <- norm((X[i,] - M[j,]),type="2")
             })
@@ -122,7 +120,6 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
                 and attempt the function again."))
       }
     
-      # clusters <- apply(diff,2,function(z) which.min(diff)) #65 Microseconds
       # This Piece is for re-evaluating the k-means
       
       for(i in 1:K){
