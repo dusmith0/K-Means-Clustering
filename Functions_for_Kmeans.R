@@ -34,9 +34,6 @@ diff
 
 
 
-
-
-
 ######Functions below this line are not being used in my MyKmeans function
 ###### They are simply old functions that I had at some point. 
  
@@ -105,23 +102,38 @@ if(is.matrix(X) == TRUE){
   }
 }
 
-diff <- apply(X,1,function(X) apply(X,2, function(z) norm((X - M),type="2")))
 
-diff <- sqrt(abs(rowSums((X^2), dims = 1) - 2 * (X %*% t(M)) + rowSums((M^2), dims = 1)))
-##The above does not produce correct values
-diff <- norm((X %*% t(M)),type="2")
+for (i in 1:nrow(X)) {
+  diff[i,] <- sqrt(rowSums((X[i,] - M)^2))
+}
 
-diff <- abs(norm(X,type="2")- norm(M))
+Mnew <- sapply(1:K,function(z) {
+  ifelse((sum(clusters ==i)) > 1
+  ,colMeans(X[which(clusters == i)])
+  ,X[which(clusters == i)])
+  })
+  
+  
+for(i in 1:K){
+  if(sum(clusters ==i) > 1){
+    Mnew[i,] <- colMeans(X[which(clusters == i),])
+  }
+  else{
+    Mnew[i,] <- X[which(clusters == i),]
+  }
+}
 
-diff <- matrix(sqrt(colSums(X%*%t(M))), nrow=nrow(X), byrow=TRUE)
+## THe for loop that takes way to long. 
+for(i in 1:nrow(X)){
+  for(j in 1:nrow(M)){
+    diff[i,j] <- norm((X[i,] - M[j,]),type="2") 
+  }
+}
 
-diff <- apply(X,c(1,2), function(X) X - M)
-
-diff <- mapply(diff <- norm((X - M),type="2"),X,row(X),row(M))
 
 
-diff <- matrix(rep(0,(nrow(X)*nrow(M))),nrow=nrow(X))
-# This loops through each row of X and computes the norm against each row of M.
+
+
 
 
 
