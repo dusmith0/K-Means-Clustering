@@ -9,6 +9,11 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
   
   # Check whether M is NULL or not. If NULL, initialize based on K randomly 
   # selected points from X.
+  
+  if(is.data.frame(X)){
+    X <- as.matrix(X)
+  }
+  
   if(is.null(M)){
     ifelse(!is.matrix(X), 
            (M <- sample(X,K,replace=FALSE)) , 
