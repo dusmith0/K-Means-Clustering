@@ -106,14 +106,16 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
       counter <- counter + 1
       diff <- matrix(rep(0,(nrow(X)*nrow(M))),nrow=nrow(X))
       
-      if(counter != 1){ #1125 nano-seconds
+      if(counter != 1){ 
         M <- Mnew
       }
+      
       diff <- sapply(1:nrow(X),function(i) {
               sapply(1:nrow(M),function(j){
               diff[i,j] <- norm((X[i,] - M[j,]),type="2")
             })
         })
+      
       clusters <- apply(diff,2,function(z) which(z == min(z)))
     
  
