@@ -75,15 +75,11 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
         # clusters <- apply(diff,2,function(z) which.min(diff)) 
         # This Piece is for re-evaluating the k-means
     
-  
-        for(i in 1:K){
-          if(sum(clusters ==i) > 1){
-            Mnew[i] <- mean(X[which(clusters == i)])
-          }
-          else{
-            Mnew[i] <- X[which(clusters == i)]
-          }
-        }
+        Mnew <- sapply(1:K,function(i) {
+          ifelse((sum(clusters ==i)) > 1
+                 ,mean(X[which(clusters == i)])
+                 ,X[which(clusters == i)])
+        })
         
         # Break option 1 the centroids don't change from one iteration to the next (exactly the same),
         if(identical(M,Mnew)){
