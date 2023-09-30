@@ -50,7 +50,7 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
   counter <- 0
   
   ### this bit runs if the X value supplied is a vector.
-    if(!is.matrix(X) == FALSE){
+    if(!is.matrix(X) == TRUE){
       Mnew <- c(rep(0,K))
   
       while(counter != numIter){
@@ -122,8 +122,8 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
       # Break option (iii) one of the clusters has disappeared after one of the iterations (in which case the error message is returned)
       if((length(table(clusters)) != K)){
         stop(paste("Note: The function completely removed one cluster with the chosen
-                  values of M. Please generate or choose a different set of initial clusters
-                  and attempt the function again."))
+                 values of M. Please generate or choose a different set of initial clusters
+                and attempt the function again."))
       }
     
       # clusters <- apply(diff,2,function(z) which.min(diff)) #65 Microseconds
