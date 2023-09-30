@@ -112,12 +112,12 @@ MyKmeans <- function(X, K, M = NULL, numIter = 100){
     if(counter != 1){ #1125 nano-seconds
       M <- Mnew
     }
-    for(i in 1:nrow(X)){
-      for(j in 1:nrow(M)){
-        diff[i,j] <- norm((X[i,] - M[j,]),type="2") 
-        }
-      }
-    clusters <- apply(diff,1,function(z) which(z == min(z)))
+    diff <- sapply(1:nrow(X),function(i) {
+      sapply(1:nrow(M),function(j){
+        diff[i,j] <- norm((X[i,] - M[j,]),type="2")
+      })
+    })
+    clusters <- apply(diff,2,function(z) which(z == min(z)))
     
  
       # Break option (iii) one of the clusters has disappeared after one of the iterations (in which case the error message is returned)
