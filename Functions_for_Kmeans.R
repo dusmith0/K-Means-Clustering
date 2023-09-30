@@ -144,3 +144,19 @@ for(i in 1:K){
   }
 }
 
+## THe for loop that takes way to long. 
+for(i in 1:nrow(X)){
+  for(j in 1:nrow(M)){
+    diff[i,j] <- norm((X[i,] - M[j,]),type="2") 
+  }
+}
+
+
+
+
+
+
+
+
+
+
