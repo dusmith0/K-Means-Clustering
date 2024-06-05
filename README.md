@@ -67,46 +67,45 @@ below). This specific implementation of K-means is sometimes referred to
 as **Lloyd’s algorithm**.
 
 ## The function for completing this process is given below. 
-    MyKmeans(X, K, M, numIter) where;
-    1. X is a matrix of the data set in n x p 
-    2. K is the number of desired clusters
-    3. M is an optional starting cluster to begin in K x p matrix
-    4. numIter is the amount of iterations for the algorithm to run. 
+MyKmeans(X, K, M, numIter) where;
+1. X is a matrix of the data set in n x p 
+2. K is the number of desired clusters
+3. M is an optional starting cluster to begin in K x p matrix
+4. numIter is the amount of iterations for the algorithm to run. 
     
 ### Exmaple of the implumentation of the algorithm:
-    ```{r, echo = TRUE, eval = TRUE}
-    # Application of K-means algorithm to ZIPCODE data
+```{r, echo = TRUE, eval = TRUE}
+# Application of K-means algorithm to ZIPCODE data
+# Rand Index Calculation example
+require(fossil)
+cluster1 <- c(2,2,1,3)
+cluster2 <- c(3,3,2,1)
+rand.index(cluster1, cluster2) # clusters match
 
-    # Rand Index Calculation example
-    require(fossil)
-    cluster1 <- c(2,2,1,3)
-    cluster2 <- c(3,3,2,1)
-    rand.index(cluster1, cluster2) # clusters match
+# Load the ZIPCODE data
+zipcode <- read.table("ZIPCODE.txt", header = F)
 
-    # Load the ZIPCODE data
-    zipcode <- read.table("ZIPCODE.txt", header = F)
+# Extract the true digits (the first Column are the true values)
+Y <- zipcode[1:100 , 1]
 
-    # Extract the true digits (the first Column are the true values)
-    Y <- zipcode[1:100 , 1]
+# Extract the data points
+X <- zipcode[1:100 , -1]
 
-    # Extract the data points
-    X <- zipcode[1:100 , -1]
+# on ZIPCODE data. Calculate Rand Index at each replicatio
+nRep <- 50
+r <- rep(0,nRep)
 
-    # on ZIPCODE data. Calculate Rand Index at each replication
-    nRep <- 50
-    r <- rep(0,nRep)
+# With MyKmeans
+nRep <- 50
+r <- rep(NULL,nRep)
 
-    # With MyKmeans
-    nRep <- 50
-    r <- rep(NULL,nRep)
-
-    for(i in 1:nRep){
-      cluster <- MyKmeans(X,10,numIter = 1)
-      r <- rand.index(Y,cluster)
-    }
+for(i in 1:nRep){
+  cluster <- MyKmeans(X,10,numIter = 1)
+  r <- rand.index(Y,cluster)
+}
     
-    cluster
-    r  # The value of r was used to assess the accuracy of the clusters, with 1 being perfect.
-    ```
+cluster
+r  # The value of r was used to assess the accuracy of the clusters, with 1 being perfect.
+```
     
     
