@@ -1,15 +1,3 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/TJks_NQ2)
-
-# Homework 2 - K-means algorithm
-
-**Acknowledgment:** This assignment is inspired by the similar
-assignment by [Ping Li](http://www.stat.rutgers.edu/home/pingli/) when I
-took Statistical Computing Class at Cornell as a graduate student.
-
-**Attention:** Because math rendering of .Rmd is not ideal, please see
-the enclosed pdf for correct rendering of all equations (an exact copy
-of this file)
-
 ## K-means
 
 K-means is one of the most popular clustering algorithms. Given n data
@@ -41,11 +29,7 @@ is the squared Euclidean distance between
 ![x_i](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;x_i "x_i")
 and
 ![\mu_k](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cmu_k "\mu_k"),
-although other distance metrics are possible. Note that the number of
-clusters
-![K](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;K "K")
-must be specified by the user. In HW2, you will implement the K-means
-algorithm and see its application on ZIPCODE data.
+although other distance metrics are possible. This particular program run through hand written ZIPCODE data in an attempt to predict what letter has been writtien. 
 
 ## Algorithm’s implementation
 
@@ -82,131 +66,47 @@ the clusters has disappeared** (this indicated bad starting point, see
 below). This specific implementation of K-means is sometimes referred to
 as **Lloyd’s algorithm**.
 
-## Starter code
+## The function for completing this process is given below. 
+    MyKmeans(X, K, M, numIter) where;
+    1. X is a matrix of the data set in n x p 
+    2. K is the number of desired clusters
+    3. M is an optional starting cluster to begin in K x p matrix
+    4. numIter is the amount of iterations for the algorithm to run. 
+    
+### Exmaple of the implumentation of the algorithm:
+    ```{r, echo = TRUE, eval = TRUE}
+    # Application of K-means algorithm to ZIPCODE data
 
--   **FunctionsKmeans.R** contains function
-    `MyKmeans(X, K, M, numIter)`: This function takes
-    ![n \times p](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;n%20%5Ctimes%20p "n \times p")
-    data matrix `X`, number of clusters `K`, (optional) initial
-    ![K \times p](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;K%20%5Ctimes%20p "K \times p")
-    matrix of cluster centers `M` and (optional) maximal number of
-    iterations for the algorithm `numIter`. It returns the vector
-    ![Y](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;Y "Y")
-    of length
-    ![n](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;n "n")
-    of cluster assignments (numbers from
-    ![1](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;1 "1")
-    to
-    ![K](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;K "K")).
-    More details are in the function comments. **Please strictly follow
-    the name, input and output guidelines as everything will be checked
-    using automatic tests**
+    # Rand Index Calculation example
+    require(fossil)
+    cluster1 <- c(2,2,1,3)
+    cluster2 <- c(3,3,2,1)
+    rand.index(cluster1, cluster2) # clusters match
 
-**Attention:** (1) If
-![M](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;M "M")
-is supplied, than those values are used as starting cluster centers. If
-![M](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;M "M")
-is NULL (default), your function should randomly pick
-![K](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;K "K")
-points out of
-![n](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;n "n")
-as starting cluster centers
-![M](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;M "M")
-(see algorithm above). (2) Depending on the value of
-![M](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;M "M"),
-it is possible for the clusters to disappear (e.g. starting from 3
-clusters, at some iteration all points are assigned only to cluster 1 or
-2, and not to 3). If this happens, you should stop (function `stop`) and
-return the error message alerting the user to change the value of
-![M](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;M "M").
+    # Load the ZIPCODE data
+    zipcode <- read.table("ZIPCODE.txt", header = F)
 
-You are welcome to create any additional functions you would like, and
-place them within **FunctionsKmeans.R**. We will only test
-`MyKmeans(X, K, M, numIter)` function, but presumably its correct
-performance will rely on correctness of your other functions. You are
-**not allowed to use any external R libraries** for this assignment, and
-you **are not allowed to use dist function**.
+    # Extract the true digits (the first Column are the true values)
+    Y <- zipcode[1:100 , 1]
 
-Things to keep in mind when implementing:
+    # Extract the data points
+    X <- zipcode[1:100 , -1]
 
--   Make sure that your first iteration is where the first assignment
-    takes place (see Algorithm’s description), and your last iteration
-    is where the last assignment takes place. Doing assignment earlier
-    or later will make your iteration numbers misaligned for automatic
-    tests.
+    # on ZIPCODE data. Calculate Rand Index at each replication
+    nRep <- 50
+    r <- rep(0,nRep)
 
--   You should check your code on simple examples before proceeding to
-    the data (i.e. what happens if I use two normal populations? what
-    happens with different initial `M`? How do cluster centroids change
-    from one iteration to next, do they appear to stabilize? how does it
-    compare with built in `kmeans` function in R when Lloyd’s algorithm
-    is used?). You will be expected to save your checks in **Tests.R**
-    file. I will use automatic tests to check that your code is correct
-    on more than just the data example with different combinations of
-    parameters.
+    # With MyKmeans
+    nRep <- 50
+    r <- rep(NULL,nRep)
 
--   Make sure to check compatibility of `M`. We will purposefully supply
-    wrong `M` to the function and see if it complains correctly.
-
--   You will need to **vectorize** the distance calculations to pass the
-    speed requirements. (hint: open the brackets in Euclidean squared
-    norm and think about how to compute the required terms efficiently).
-    You should not be taking a lot of extra memory for vectorization.
-
-## Application to ZIPCODE data
-
-The file **ZIPCODE.txt** provides 7,291 points of vectorized 16 by 16
-pixels of image that should represent one of the 10 digits (from 0 to
-9). The first column contains the correct cluster assignment (from 1 to
-10), and the rest (256) are pixel values. The starter code in
-**ZIPCODE_example.R** loads the data, and guides you through the
-analysis. You will need to fill the remaining steps.
-
-Because the output of k-means algorithm is dependent on initial centroid
-values, you are asked to try the algorithm nRep = 50 times with a
-different random initialization of `M`. Choose true number of clusters
-for
-![K](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;K "K")
-(![K=10](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;K%3D10 "K=10")).
-At each replication, call your algorithm as implemented in `MyKmeans`
-and evaluate the performance of the algorithm using the **RandIndex**
-implemented in the R package `fossil`. RandIndex takes values between 0
-and 1, with 1 being the perfect match. The example code is provided but
-you will need to install the package `fossil` first if you don’t have
-it. At the end, report the mean RandIndex for your implementation across
-50 replications, and your mean run time.
-
-## Grading for this assignment
-
-Your assignment will be judged as follows (based on 100 points)
-
--   correctness *(50% of the grade)*
-
-We will apply automatic tests to `MyKmeans` function with different
-examples. Compatibility checks are part of the correctness grade.
-Evidence that you tested your code on more than just our example is part
-of your correctness grade,
-
--   speed of implementation (you need to vectorize your code to pass the
-    speed requirement) *(30% of the grade)*
-
-Your speed will be dependent on your machine, but as a guidelene, my
-code is around 2 times slower than built-in `kmeans` on ZIPCODE data.
-You will get full points if your code is **at most 2 times slower**
-comparable to mine. You will loose 5 points for every fold over. You
-will get +5 **bonus** points if your **completely correct** code on 1st
-submission is faster than mine (median your time/median mine time \<
-0.9).
-
--   code style/documentation *(10% of the grade)*
-
-You need to comment different parts of the code so it’s clear what they
-do, have good indentation, readable code with names that make sense. See
-guidelines on R style, and posted grading rubric.
-
--   version control/commit practices *(10% of the grade)*
-
-I expect you to start early on this assignment, and work gradually. You
-want to commit often, have logically organized commits with short
-description that makes sense. See guidelines on good commit practices,
-and posted grading rubric.
+    for(i in 1:nRep){
+      cluster <- MyKmeans(X,10,numIter = 1)
+      r <- rand.index(Y,cluster)
+    }
+    
+    cluster
+    r  # The value of r was used to assess the accuracy of the clusters, with 1 being perfect.
+    ```
+    
+    
